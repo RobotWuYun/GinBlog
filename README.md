@@ -33,3 +33,17 @@
 2. 再main中引入route的Init方法
 3.启动测试链接
 
+### 数据库
+1. 安装gorm `go get -u github.com/jinzhu/gorm`
+2. 在model下建立 user,category,Article的model
+3. 建立db入口文件
+    + 引入驱动
+    + 建立链接
+    + 相关设置
+    + 自动迁移
+4. 奖励对象并映射数据库和json 
+5. 将Model的结构体注册到自动迁移里
+6. 再主函数调用数据库初始化函数
+
+### 错误处理
+1. 再util里建立errmsg.go,并建立msg,code之间的关系
