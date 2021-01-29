@@ -47,3 +47,10 @@
 
 ### 错误处理
 1. 再util里建立errmsg.go,并建立msg,code之间的关系
+
+### API接口
+1. 在api下分类建立api源码
+
+### 在route中注册地址
+### 在model添加数据库操作方法
+### 在api中写逻辑,调用model中的方法

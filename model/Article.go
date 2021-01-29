@@ -7,11 +7,12 @@ import (
 
 type Article struct {
 	gorm.Model
-	Title   string `gorm:"type:varchar(100);not null" json:"title"`
-	Cid     int    `gorm:"type:int;not null" json:"cid"`
-	Desc    string `gorm:"type:varchar(200)" json:"desc"`
-	Content string `gorm:"type:longtext" json:"content"`
-	Img     string `gorm:"type:varchar(100)" json:"img"`
+	Title    string   `gorm:"type:varchar(100);not null" json:"title"`
+	Cid      int      `gorm:"type:int;not null" json:"cid"`
+	Desc     string   `gorm:"type:varchar(200)" json:"desc"`
+	Content  string   `gorm:"type:longtext" json:"content"`
+	Img      string   `gorm:"type:varchar(100)" json:"img"`
+	Category Category `gorm:"foreignkey:Cid"`
 }
 
 //新增文章
@@ -31,7 +32,7 @@ func GetCateArt(cid int, pageSize int, pageNum int) ([]Article, int, int) {
 	if err != nil {
 		return nil, errmsg.ERROR_CATE_NOT_EXIST, 0
 	}
-	return nil, errmsg.SUCCSE, total
+	return cateArtiList, errmsg.SUCCSE, total
 }
 
 // todo 查询单个文章

@@ -22,10 +22,10 @@ func CreateUser(data *User) int {
 }
 
 //查询用户是否存在
-func CheckUser(name string) (code int) {
+func CheckUser(name string, userid uint) (code int) {
 	var users User
 	db.Select("id").Where("username=?", name).First(&users)
-	if users.ID > 0 {
+	if userid != users.ID {
 		return errmsg.ERROR_USERNAME_USED
 	}
 	return errmsg.SUCCSE
