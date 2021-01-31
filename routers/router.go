@@ -6,11 +6,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter() {
+func InitRouter() *gin.Engine {
 	gin.SetMode(utils.AppMode)
-	r := gin.Default()
+	router := gin.Default()
+	router.LoadHTMLGlob("./pages/**/*")
 
-	auth := r.Group("api/v1")
+	//page
+	router.GET("/home/index", v1.ShowIndex)
+	router.GET("/home/blog", v1.ShowBlog)
+	router.GET("/home/blogContext", v1.ShowBlogContent)
+	//auth.GET("/home/categroyPage", v1)
+	router.GET("/home/aboutMe", v1.ShowAboutMe)
+	router.GET("/home/file", v1.ShowFile)
+	router.GET("/home/admin", v1.ShowAdmin)
+
+	auth := router.Group("api/v1")
 	{
 		//用户
 		//auth.POST("user/add", v1.AddUser)
@@ -32,5 +42,5 @@ func InitRouter() {
 		auth.GET("article/info/:id", v1.GetArtInfo)
 
 	}
-	r.Run(utils.HttpPort)
+	return router
 }

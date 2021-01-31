@@ -68,10 +68,12 @@ func GetArticles(c *gin.Context) {
 
 	data, code, total := model.GetArt(pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"data":    data,
-		"total":   total,
-		"message": errmsg.GetErrMsg(code),
+		"status":   code,
+		"data":     data,
+		"total":    total,
+		"pagesize": pageSize,
+		"pagenum":  pageNum,
+		"message":  errmsg.GetErrMsg(code),
 	})
 }
 
