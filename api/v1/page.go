@@ -41,3 +41,9 @@ func ShowAdmin(c *gin.Context) {
 		"title": "admin",
 	})
 }
+
+func Login(c *gin.Context) {
+	c.HTML(http.StatusOK, "userLogin.html", gin.H{
+		"title": "login",
+	})
+}
