@@ -12,18 +12,27 @@ func InitRouter() *gin.Engine {
 	router.LoadHTMLGlob("./pages/**/*")
 
 	//页面
+	//首页
 	router.GET("/home/index", v1.ShowIndex)
+	//文章列表
 	router.GET("/home/blog", v1.ShowBlog)
+	//文章详情
 	router.GET("/home/blogContext", v1.ShowBlogContent)
 	//auth.GET("/home/categroyPage", v1)
+	//关于我
 	router.GET("/home/aboutMe", v1.ShowAboutMe)
+	//归档
 	router.GET("/home/file", v1.ShowFile)
+	//分类
+	router.GET("/home/classify", v1.Classify)
+	//登录
 	router.GET("/loginbyadmin", v1.Login)
-
+	//管理
+	router.GET("/admin", v1.ShowAdmin)
 	auth := router.Group("api/v1")
 	{
 		//管理页面
-		router.GET("/home/admin", v1.ShowAdmin)
+
 		//用户
 		//auth.POST("user/add", v1.AddUser)
 		auth.GET("users", v1.GetUsers)

@@ -13,16 +13,34 @@
     <![endif]-->
     <script src="../../web/js/jquery-1.11.3.js"></script>
     <script src="../../web/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-    $(function(){
-        $("#mynav").load("../mynav_out.html", function() {
-            $("#manager").addClass("active");    
-        });
-        $("#blog_left").load("blog_left_admin.html");
-        //$("#blog_right").load("blog_content.html");
-        //$("#blog_right").load("blog_order.html");
-    });
-</script>
+    <script type='text/javascript'>
+        //页面的初始化
+        $(function () {
+            InitData();
+        })
+        function InitData() {//查询全部分类
+            $.ajax({
+                type : "get",
+                url : "/api/v1/categorys",
+                data : {pagesize : 0,
+                    pagenum : 0,
+                },
+                success : function(data) {
+                    ClassData(data.data)//处理数据渲染页面
+                }
+            });
+        }
+
+        function ClassData(data){
+            console.log('data success')
+            var html='';
+            for(var num = 0;num < data.length;num++){
+                html+='<a href="/api/v1/categorys/'+data[num].id+'">'+data[num].name+'</a>&emsp;'
+            }
+            $("#sortable").html(html);
+        }
+
+    </script>
     <style>
         body {
             padding-top: 50px;
@@ -101,16 +119,11 @@
         <!--主要内容-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
             <div style="margin: 15px;">
-                <h1 class="page-header">文章归档</h1>
+                <h1 class="page-header">文章分类</h1>
                     <p>
-                        将所有文章整理归档，以便查看。
+                        分类标签点击传送~
                     </p>
-                <h3>
-                    2016年5月
-                </h3>
-                <ul>
-                    <li><a style="font-size: 20px">博客1</a><span style="margin-left: 24px">(2016年5月14日，显示英文)</span></li>
-                </ul>
+                <div id="sortable"></div>
             </div>
         </div>
     </div>
@@ -129,78 +142,6 @@
 <!-- <script src="js/jquery-1.11.3.js"></script>
 <script src="js/bootstrap.min.js"></script> -->
     
-<script type="text/javascript">
-    //页面的初始化
-    $(function () {
-        //分页数据
-        InitData();
-    })
 
-    function InitData() {
-        $.ajax({
-            async: false,
-            type: "post",
-            url: "/home/PageData",
-            data: {
-                search: search,
-                pageno:0
-            },
-            success: function (data) {
-                console.log('article数据')
-                console.log(data)
-                var Count = data.count
-                var PageSize = data.pagesize;
-                var Page =data.pagenum;
-                $("#pagination").pagination(Count, {
-                    callback: pageselectCallback,
-                    num_edge_entries: 1,
-                    prev_text: "上一页",
-                    prev_show_always: true,
-                    next_text: "下一页",
-                    next_show_always: true,
-                    items_per_page: PageSize,
-                    current_page: Page,
-                    link_to: '#__aurl=!/home/PageData',
-                    num_display_entries: 4
-                });
-            }
-        });
-    }
-
-    //使用分页插件分页后的回调函数2
-    function pageselectCallback(page_id, jq) {
-        var search = $("#txt_search").val();//名称
-
-        $.ajax({
-            async: false,
-            type: "post",
-            url: "/home/PageNextData",
-            data: {
-                search: search,
-                pageno: (parseInt(page_id) + parseInt(1)),
-            },
-            success: function (data) {
-                console.log('下一页的数据')
-                console.log(data)
-                console.log(data.datalist)
-                htmlData(data.datalist)
-            }
-        });
-    }
-    function htmlData(data){
-        var html='';
-        for(var i=0;i<data.length;i++){
-            html+='<tr class="sort-item"  id="module_'+data[i].id+'" value="'+data[i].id+'">';
-            html+='   <td style="text-align: center;width: 350px;"><span class="label label-default" >'+data[i].id+'</span></td>';
-            html+='   <td style="text-align: center;width: 350px;" ><strong>'+data[i].first_name+'</strong></td>';
-            html+='   <td style="text-align: center;width: 350px;" ><strong>'+data[i].last_name+'</strong></td>';
-            html+='   <td style="text-align: center;width: 350px;"><button onclick="editdata('+data[i].id+')">编辑</button><button onclick="deletedata('+data[i].id+')">删除</button></td>';
-            html+='</tr>';
-        }
-
-        $("#sortable").html(html);
-    }
-
-</script>
 </body>
 </html>
