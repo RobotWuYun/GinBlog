@@ -30,12 +30,29 @@
                 }
             });
         }
-
+        //获取颜色
+        function getColor(number) {
+            let color = number;
+            const blue = parseInt((color)%256);
+            const green = parseInt((color+10)%256);
+            const red = parseInt((color+100)%256);
+            const alpha = 1;
+            return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+        }
+        //获取随机数
+        function GetRandomNum(Min,Max)
+        {
+            var Range = Max - Min;
+            var Rand = Math.random();
+            return(Min + Math.round(Rand * Range));
+        }
         function ClassData(data){
             console.log('data success')
             var html='';
+            var color = 1;
             for(var num = 0;num < data.length;num++){
-                html+='<a href="/api/v1/categorys/'+data[num].id+'">'+data[num].name+'</a>&emsp;'
+                color = getColor(GetRandomNum(0,256));
+                html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
             }
             $("#sortable").html(html);
         }

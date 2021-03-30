@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ybz's blog</title>
+<link href="../../web/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<!--[if lt IE 9]>
+    <script src="../../js/html5shiv.js"></script>
+    <script src="../../web/js/respond.min.js"></script>
+    <![endif]-->
+<style>
+        body {
+            padding-top: 50px;
+            padding-bottom: 40px;
+            color: #5a5a5a;
+        }
+
+
+        .main {
+            padding: 20px;
+        }
+
+        .main .page-header {
+            margin-top: 0;
+        }
+</style>
+<script type="text/javascript" src="../../web/js/jquery-2.1.1.min.js"></script> 
+<script src="../../web/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
+<script src="./../../web/js/bootstrap.min.js"></script>
+<script src="./../../web/js/bootstrap-paginator.min.js"></script>
+</head>
+
+<body>
+<!--下面是顶部导航栏的代码-->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header page-scroll">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand page-scroll" href="/home/index">YBZ's blog</a>
+		</div>
+
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav" style="margin-left: 50px">
+				<li class="hidden">
+					<a href="#page-top"></a>
+				</li>
+				<li>
+					<a class="page-scroll" href="/home/index">首页</a>
+				</li>
+				<li>
+					<a class="page-scroll" href="/home/blog">博客</a>
+				</li>
+				<li>
+					<a class="page-scroll" href="/home/file">归档</a>
+				</li>
+				<li>
+					<a class="page-scroll" href="/home/classify">分类</a>
+				</li>
+				<li>
+					<a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
+				</li>
+				<li>
+					<a class="page-scroll" href="/home/aboutMe">关于我</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!--自适应布局-->
+<div class="container-fluid">
+    <div class="row">
+
+        <!--主要部分-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
+        	<div style="margin: 15px 15px">
+	        	<h1 class="page-header" id="tit"></h1>
+				<div id="sortable"></div>
+				<ul id="pages" class="pagination"></ul>
+	        </div>
+	    </div>
+    </div>
+</div>
+
+<script type='text/javascript'>
+	//页面的初始化
+	$(function () {
+		//分页数据
+		InitData();
+	})
+
+	function InitData() {//分页函数
+		$.ajax({ //去后台查询第一页数据
+			type : "get",
+			url : "/api/v1/articles/list/"+GetQueryString('ID'),
+			data : {pagesize : 5,
+					pagenum : 1,
+					},
+			success : function(data) {
+				htmlData(data.data)//处理第一页的数据
+				page = parseInt(data.total/data.pagesize)+1
+				var options = {//根据后台返回的分页相关信息，设置插件参数
+
+					bootstrapMajorVersion : 3, //如果是bootstrap3版本需要加此标识，并且设置包含分页内容的DOM元素为UL,如果是bootstrap2版本，则DOM包含元素是DIV
+					currentPage : data.pagenum, //当前页数
+					totalPages : page, //总页数
+					numberOfPages : data.pagesize,//每页记录数
+					itemTexts : function(type, page, current) {//设置分页按钮显示字体样式
+						switch (type) {
+							case "first":
+								return "首页";
+							case "prev":
+								return "上一页";
+							case "next":
+								return "下一页";
+							case "last":
+								return "末页";
+							case "page":
+								return page;
+						}
+					},
+					onPageClicked : function(event, originalEvent, type, page) {//分页按钮点击事件
+						$.ajax({ //去后台查询第page页数据
+							type : "get",
+							url : "/api/v1/articles",
+							data : {pagesize : 5,
+									pagenum : page,
+							},
+							success : function(data) {
+								htmlData(data.data);//处理数据
+							}
+						});
+					}
+				};
+				$('#pages').bootstrapPaginator(options);//设置分页
+			}
+		});
+	}
+;
+	function GetQueryString(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r!=null)return  unescape(r[2]); return null;
+	};
+	function htmlData(data){
+		console.log('data usccess')
+		tit = data[0].Category.name;
+		$("#tit").text(tit);
+
+		var html='';
+		for(var i=0;i<data.length;i++){
+			html+='<div class="row" id="module_'+data[i].ID+'">';
+			html+='<div class="col-md-9">';
+			html+='<div class="panel panel-primary" style="border-color: #D9EDF7">';
+			html+='<div class="panel-heading" style="color: #000;background-color: #D9EDF7;border-color: #D9EDF7">';
+			html+='<div class="row">';
+			html+='<div class="col-md-7 col-md-offset-1">';
+			html+='<h2 style="font-weight:bold;margin: 0px auto;display: inline">'+data[i].title;
+			html+='</h2>';
+			html+='</div>';
+			html+='<div class="col-md-4">';
+			html+='<h4>'+data[i].CreatedAt+'</h4>';
+			html+='</div>';
+			html+='</div>';
+			html+='</div>';
+			<!--panel面板的内容，下同-->
+			html+='<div class="panel-body" style="color: #000;">';
+			html+='<p style="font-size: 1.4em;text-indent: 2em;">';
+			html+=data[i].desc;
+			html+='</p>';
+			html+='<div style="margin: 15px auto">';
+			url = "/home/blogContext/?ID="+data[i].ID
+			html+='<a href='+url+' style="font-size: 1.8em;">阅读全文</a>';
+			html+='</div>';
+			html+='</div>';
+			html+='</div>';
+			html+='</div>';
+			html+='</div>';
+		}
+		$("#sortable").html(html);
+	}
+
+</script>
+
+</body>
+</html>

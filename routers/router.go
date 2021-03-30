@@ -18,13 +18,14 @@ func InitRouter() *gin.Engine {
 	router.GET("/home/blog", v1.ShowBlog)
 	//文章详情
 	router.GET("/home/blogContext", v1.ShowBlogContent)
-	//auth.GET("/home/categroyPage", v1)
 	//关于我
 	router.GET("/home/aboutMe", v1.ShowAboutMe)
 	//归档
 	router.GET("/home/file", v1.ShowFile)
 	//分类
 	router.GET("/home/classify", v1.Classify)
+	//分类列表
+	router.GET("/categorys/blogList/", v1.ClassifyList)
 	//登录
 	router.GET("/loginbyadmin", v1.Login)
 	//管理

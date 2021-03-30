@@ -61,3 +61,10 @@ func Classify(c *gin.Context) {
 		"title": "分类",
 	})
 }
+
+//博客分类列表页
+func ClassifyList(c *gin.Context) {
+	c.HTML(http.StatusOK, "blog_category_articles.html", gin.H{
+		"title": "分类文章列表",
+	})
+}
