@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ybz's blog</title>
-<link href="../../web/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ybz's blog</title>
+    <link href="../../web/css/bootstrap.min.css" rel="stylesheet">
 
-<!--[if lt IE 9]>
+    <!--[if lt IE 9]>
     <script src="../../js/html5shiv.js"></script>
     <script src="../../web/js/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript" src="../../web/js/jquery-2.1.1.min.js"></script> 
+    <script src="../../web/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
+    <script src="./../web/js/bootstrap.min.js"></script>
+    <script src="./../web/js/bootstrap-paginator.min.js"></script>
 
-<script src="../../web/js/jquery-1.11.3.js"></script>
-<script src="../../web/js/bootstrap.min.js"></script>
-<style>
+
+    <style>
         body {
             padding-top: 50px;
             padding-bottom: 40px;
             color: #5a5a5a;
         }
 
-/* 下面是左侧导航栏的代码 */
-.sidebar {
+        /* 下面是左侧导航栏的代码 */
+        .sidebar {
             position: fixed;
             top: 51px;
             bottom: 0;
@@ -35,13 +39,12 @@
             border-right: 1px solid #eee;
             /*background-color: #ddd;*/
             background-image: url(../../web/img/blog_bg5.jpg);
-			background-repeat: none;
-			background-attachment: scroll;
-			background-position: center center;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			background-size: cover;
-			-o-background-size: cover;
+            background-attachment: scroll;
+            background-position: center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
         }
 
         .nav-sidebar {
@@ -76,211 +79,202 @@
         .main .page-header {
             margin-top: 0;
         }
-</style>
+    </style>
 
 </head>
 
 <body>
-<!--下面是顶部导航栏的代码-->
-<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-<div class="container-fluid">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-<span class="sr-only">Toggle navigation</span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-<a class="navbar-brand" href="#">但行好事,莫问前程</a>
-</div>
 
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<ul class="nav navbar-nav">
-    <li>
-        <a class="page-scroll" href="/home/index">首页</a>
-    </li>
-    <li>
-        <a class="page-scroll" href="/home/blog">博客</a>
-    </li>
-    <li>
-        <a class="page-scroll" href="/home/file">归档</a>
-    </li>
-    <li>
-        <a class="page-scroll" href="/home/classify">分类</a>
-    </li>
-    <li>
-        <a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
-    </li>
-    <li>
-        <a class="page-scroll" href="/home/aboutMe">关于我</a>
-    </li>
-</ul>
-</div>
+
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">但行好事,莫问前程</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="page-scroll" href="/home/index">首页</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/blog">博客</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/file">归档</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/classify">分类</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/aboutMe">关于我</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
 <!—自适应布局-->
 <div class="container-fluid">
-<div class="row">
-<!—左侧导航栏-->
+    <div class="row">
 
-<div class="col-sm-3 col-md-2 sidebar">
-<ul class="nav nav-sidebar">
-<!-- <li style="margin-right: 0px;margin-bottom: 0px;margin-left: 0px;"> -->
-<li class="active"><a href="#">模板页面</a></li>
-<li><a href="#">分类管理</a></li>
-<li><a href="#">文章管理</a></li>
-<li><a href="#">用户管理</a></li>
-</ul>
-<!--
-<ul class="nav nav-sidebar">
-<li><a href="#">设置</a></li>
-<li><a href="#">帮助</a></li>
-</ul>
--->
-</div>
-<!—右侧管理控制台-->
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-<h1 class="page-header">管理页面</h1>
 
-<p>
-<button type="button" class="btn btn-lg btn-default">操作1</button>
-<button type="button" class="btn btn-lg btn-primary">操作2</button>
-<button type="button" class="btn btn-lg btn-success">操作3</button>
-<button type="button" class="btn btn-lg btn-info">操作4</button>
-<button type="button" class="btn btn-lg btn-warning">操作5</button>
-<button type="button" class="btn btn-lg btn-danger">操作6</button>
-</p>
-<div class="row">
-<div class="col-md-6">
-<!-- panel面板，里面放置一些控件，下同-->
-<div class="panel panel-primary">
-<!-- panel面板的标题，下同-->
-<div class="panel-heading">
-<h3 class="panel-title">最新提醒</h3>
-</div>
-<!-- panel面板的内容，下同-->
-<div class="panel-body">
-<div class="alert alert-success" role="alert">
-<strong>提示</strong>您的订单（2014001）已经审批通过！
-</div>
-<div class="alert alert-danger" role="alert">
-<strong>提示</strong>您的订单（2014002）被打回！
-</div>
-<div class="alert alert-warning" role="alert">
-<strong>提示</strong>您的订单（2013001）客户付款延迟！
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-6">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <!-- <li style="margin-right: 0px;margin-bottom: 0px;margin-left: 0px;"> -->
+                <li><a href="/admin">模板页面</a></li>
+                <li><a href="/admin/classify">分类管理</a></li>
+                <li class="active"><a href="/admin/article">文章管理</a></li>
+                <li><a href="/admin/user">用户管理</a></li>
+            </ul>
 
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">我的任务</h3>
-</div>
-<div class="panel-body">
-<ul class="nav nav-pills nav-stacked" role="tablist">
-<li role="presentation">
-<a href="#" class="alert alert-info">
-<span class="badge pull-right">42</span>
-订单审批
-</a>
-</li>
-<li role="presentation">
-<a href="#" class="alert alert-info">
-<span class="badge pull-right">20</span>
-收款确认
-</a>
-</li>
-<li role="presentation">
-<a href="#" class="alert alert-info">
-<span class="badge pull-right">10</span>
-付款确认
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-md-6">
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">最新订单</h3>
-</div>
-<div class="panel-body">
-<table class="table table-striped">
-<thead>
-<tr>
-<th>#</th>
-<th>产品</th>
-<th>数量</th>
-<th>总金额</th>
-<th>业务员</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Apple Macbook air</td>
-<td>10</td>
-<td>80000</td>
-<td>王小贱</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Apple iPad air</td>
-<td>20</td>
-<td>65000</td>
-<td>尹开花</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Apple Macbook pro</td>
-<td>5</td>
-<td>50000</td>
-<td>刘老根</td>
-</tr>
-</tbody>
-</table>
-<p><a class="btn btn-primary" href="#" role="button">查看详细&raquo;</a></p>
-</div>
-</div>
-</div>
-<div class="col-md-6">
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">工程进度</h3>
-</div>
-<div class="panel-body">
-<h3><span class="label label-primary">水井挖掘工程</span></h3>
+        </div>
 
-<div class="progress">
-<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="80"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: 60%"><span class="sr-only">80% Complete</span>
-</div>
-</div>
-<h3><span class="label label-danger">基建工程</span></h3>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">文章</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>标题</th>
+                                    <th>分类</th>
+                                </tr>
+                                </thead>
+                                <tbody id="sortable-tag">
+                                </tbody>
+                            </table>
+                            <ul id="tagpages" class="pagination"></ul>
+                            <p>
+                                <button type="button" class="btn btn-primary" onclick="addModalShow()">添加</button>
+                                <button type="button" class="btn btn-info" onclick="editModalShow()">修改</button>
+                                <button type="button" class="btn btn-danger" onclick="deleteArt()">删除</button>
 
-<div class="progress">
-<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="30"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: 80%"><span class="sr-only">30% Complete (danger)</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!--
-<script src="../../js/jquery-1.11.1.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
--->
+<script type='text/javascript'>
+    function deleteArt(){
+        var artid = $('input[name="art"]:checked').val();
+        if(artid==null){
+            alert("请选择删除项....");
+            return false;
+        }
+        else{
+            deleteArts()
+        }
+    }
+    function deleteArts() {
+        var artid = $('input[name="art"]:checked').val();
+        var data = {};
+        data["name"] = $('#edit-input').val();
+        $.ajax({
+            url: '/api/v1/article/'+artid,
+            type: 'DELETE',
+            success: function (data, status) {
+                InitData();
+            }
+        });
+    }
+
+    //页面的初始化
+    $(function () {
+        //分页数据
+        InitData();
+    })
+
+    function InitData() {//分页函数
+        $.ajax({ //去后台查询第一页数据
+            type : "get",
+            url : "/api/v1/articles",
+            data : {pagesize : 10,
+                pagenum : 1,
+            },
+            success : function(data) {
+                htmlData(data.data)//处理第一页的数据
+                page = parseInt(data.total/data.pagesize)+1
+                var options = {//根据后台返回的分页相关信息，设置插件参数
+
+                    bootstrapMajorVersion : 3, //如果是bootstrap3版本需要加此标识，并且设置包含分页内容的DOM元素为UL,如果是bootstrap2版本，则DOM包含元素是DIV
+                    currentPage : data.pagenum, //当前页数
+                    totalPages : page, //总页数
+                    numberOfPages : data.pagesize,//每页记录数
+                    itemTexts : function(type, page, current) {//设置分页按钮显示字体样式
+                        switch (type) {
+                            case "first":
+                                return "首页";
+                            case "prev":
+                                return "上一页";
+                            case "next":
+                                return "下一页";
+                            case "last":
+                                return "末页";
+                            case "page":
+                                return page;
+                        }
+                    },
+                    onPageClicked : function(event, originalEvent, type, page) {//分页按钮点击事件
+                        $.ajax({ //去后台查询第page页数据
+                            type : "get",
+                            url : "/api/v1/articles",
+                            data : {pagesize : 10,
+                                pagenum : page,
+                            },
+                            success : function(data) {
+                                htmlData(data.data);//处理数据
+                            }
+                        });
+                    }
+                };
+                $('#tagpages').bootstrapPaginator(options);//设置分页
+            }
+        });
+    }
+    ;
+
+    function htmlData(data){
+        console.log('data usccess')
+        var html='';
+        for(var i=0;i<data.length;i++){
+            html += '<tr>';
+            html += '<td>';
+            html += '<label>';
+            html += '<input type="radio" name="art" id="'+data[i].id+'" value="'+data[i].id+'">';
+            html += '</label>';
+            html += '</td>';
+            html += '<td>'+data[i].ID+'</td>';
+            html += '<td>'+data[i].title+'</td>';
+            html += '<td>'+data[i].Category.name+'</td>';
+            html += '<td></tr></td>';
+
+        }
+        $("#sortable-tag").html(html);
+    }
+
+</script>
 
 </body>
 </html>

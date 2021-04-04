@@ -28,8 +28,15 @@ func InitRouter() *gin.Engine {
 	router.GET("/categorys/blogList/", v1.ClassifyList)
 	//登录
 	router.GET("/loginbyadmin", v1.Login)
-	//管理
+	//模板页面
 	router.GET("/admin", v1.ShowAdmin)
+	//管理文章页面
+	router.GET("/admin/article", v1.AdminArticle)
+	//管理分类页面
+	router.GET("/admin/classify", v1.AdminClassify)
+	//管理用户页面
+	router.GET("/admin/user", v1.AdminUser)
+
 	auth := router.Group("api/v1")
 	{
 		//管理页面

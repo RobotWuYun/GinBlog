@@ -32,14 +32,15 @@ func CheckCategory(name string) (code int) {
 // todo 查询分类下的所有文章
 
 //获取分类列表
-func GetCate(pageSize int, pageNum int) ([]Category, int) {
+func GetCate(pageSize int, pageNum int) ([]Category, int, int) {
 	var cate []Category
 	var total int
-	err := db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cate).Count(&total).Error
+	err := db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cate).Error
+	db.Model(&cate).Count(&total)
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, 0
+		return nil, errmsg.ERROR, 0
 	}
-	return cate, total
+	return cate, errmsg.SUCCSE, total
 }
 
 //编辑分类

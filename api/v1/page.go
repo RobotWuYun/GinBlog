@@ -48,6 +48,27 @@ func ShowAdmin(c *gin.Context) {
 	})
 }
 
+//管理文章页面
+func AdminArticle(c *gin.Context) {
+	c.HTML(http.StatusOK, "admin_article.html", gin.H{
+		"title": "文章管理",
+	})
+}
+
+//管理分类页面
+func AdminClassify(c *gin.Context) {
+	c.HTML(http.StatusOK, "admin_tag.html", gin.H{
+		"title": "分类管理",
+	})
+}
+
+//管理用户页面
+func AdminUser(c *gin.Context) {
+	c.HTML(http.StatusOK, "admin_user.html", gin.H{
+		"title": "用户管理",
+	})
+}
+
 //登录页面
 func Login(c *gin.Context) {
 	c.HTML(http.StatusOK, "userLogin.html", gin.H{
