@@ -67,6 +67,7 @@ func EditArt(id int, data *Article) int {
 	maps["desc"] = data.Desc
 	maps["content"] = data.Content
 	maps["img"] = data.Img
+	maps["timestamp"] = data.Timestamp
 	err = db.Model(&art).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR

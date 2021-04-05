@@ -162,8 +162,8 @@
                             </table>
                             <ul id="tagpages" class="pagination"></ul>
                             <p>
-                                <button type="button" class="btn btn-primary" onclick="addModalShow()">添加</button>
-                                <button type="button" class="btn btn-info" onclick="editModalShow()">修改</button>
+                                <button type="button" class="btn btn-primary" onclick="addArt()">添加</button>
+                                <button type="button" class="btn btn-info" onclick="editArt()">修改</button>
                                 <button type="button" class="btn btn-danger" onclick="deleteArt()">删除</button>
 
                             </p>
@@ -177,6 +177,20 @@
 </div>
 
 <script type='text/javascript'>
+    function addArt(){
+        window.location.href="/admin/add/"
+    }
+    function editArt(){
+        var artid = $('input[name="art"]:checked').val();
+        if(artid==null){
+            alert("请选择编辑项....");
+            return false;
+        }
+        else{
+            var url = "/admin/edit/?ID="+artid
+            window.location.href=url
+        }
+    }
     function deleteArt(){
         var artid = $('input[name="art"]:checked').val();
         if(artid==null){
@@ -190,7 +204,6 @@
     function deleteArts() {
         var artid = $('input[name="art"]:checked').val();
         var data = {};
-        data["name"] = $('#edit-input').val();
         $.ajax({
             url: '/api/v1/article/'+artid,
             type: 'DELETE',
@@ -262,7 +275,7 @@
             html += '<tr>';
             html += '<td>';
             html += '<label>';
-            html += '<input type="radio" name="art" id="'+data[i].id+'" value="'+data[i].id+'">';
+            html += '<input type="radio" name="art" id="'+data[i].ID+'" value="'+data[i].ID+'">';
             html += '</label>';
             html += '</td>';
             html += '<td>'+data[i].ID+'</td>';

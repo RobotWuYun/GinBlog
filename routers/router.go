@@ -36,6 +36,10 @@ func InitRouter() *gin.Engine {
 	router.GET("/admin/classify", v1.AdminClassify)
 	//管理用户页面
 	router.GET("/admin/user", v1.AdminUser)
+	//编辑文章
+	router.GET("/admin/edit", v1.EditArt)
+	//添加文章
+	router.GET("/admin/add", v1.AddArt)
 
 	auth := router.Group("api/v1")
 	{

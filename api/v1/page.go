@@ -89,3 +89,17 @@ func ClassifyList(c *gin.Context) {
 		"title": "分类文章列表",
 	})
 }
+
+//编辑文章
+func EditArt(c *gin.Context) {
+	c.HTML(http.StatusOK, "editArts.html", gin.H{
+		"title": "编辑文章",
+	})
+}
+
+//添加文章
+func AddArt(c *gin.Context) {
+	c.HTML(http.StatusOK, "addArts.html", gin.H{
+		"title": "添加文章",
+	})
+}

@@ -1,139 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ybz's blog</title>
-<link href="../../web/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>但行好事,莫问前程</title>
 
-<!--[if lt IE 9]>
+    <link href="../../web/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../web/md/examples/css/style.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.preview.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.css"/>
+
+    <!--[if lt IE 9]>
     <script src="../../js/html5shiv.js"></script>
     <script src="../../web/js/respond.min.js"></script>
     <![endif]-->
-<style>
+    <script src="../../web/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../web/js/jquery-2.1.1.min.js"></script>
+
+    <script src="../../web/md/examples/js/jquery.min.js"></script>
+    <script src="../../web/md/lib/marked.min.js"></script>
+    <script src="../../web/md/lib/prettify.min.js"></script>
+
+    <script src="../../web/md/lib/raphael.min.js"></script>
+    <script src="../../web/md/lib/underscore.min.js"></script>
+    <script src="../../web/md/lib/sequence-diagram.min.js"></script>
+    <script src="../../web/md/lib/flowchart.min.js"></script>
+    <script src="../../web/md/lib/jquery.flowchart.min.js"></script>
+
+    <script src="../../web/md/editormd.js"></script>
+    <style>
         body {
             padding-top: 50px;
             padding-bottom: 40px;
             color: #5a5a5a;
         }
 
+        .editormd-html-preview {
+            width: 90%;
+            margin: 0 auto;
+        }
 
         .main {
             padding: 20px;
         }
 
-        .main .page-header {
-            margin-top: 0;
+
+        #layout > header, .btns {
+            width: auto;
         }
-</style>
-<script src="../../web/js/jquery-1.11.3.js"></script>
-<script src="../../web/js/bootstrap.min.js"></script>
+
+
+        #sidebar h1 {
+            font-size: 16px;
+        }
+
+        #custom-toc-container {
+            padding-left: 0;
+        }
+
+        #test-editormd-view, #test-editormd-view2 {
+            padding-left: 0;
+            padding-right: 430px;
+            margin: 0;
+        }
+    </style>
 </head>
-
 <body>
-<!--下面是顶部导航栏的代码-->
-<!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header page-scroll">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand page-scroll" href="/home/index">YBZ's blog</a>
-		</div>
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="/home/index">YBZ's blog</a>
+        </div>
 
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav" style="margin-left: 50px">
-				<li class="hidden">
-					<a href="#page-top"></a>
-				</li>
-				<li>
-					<a class="page-scroll" href="/home/index">首页</a>
-				</li>
-				<li>
-					<a class="page-scroll" href="/home/blog">博客</a>
-				</li>
-				<li>
-					<a class="page-scroll" href="/home/file">归档</a>
-				</li>
-				<li>
-					<a class="page-scroll" href="/home/classify">分类</a>
-				</li>
-				<li>
-					<a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
-				</li>
-				<li>
-					<a class="page-scroll" href="/home/aboutMe">关于我</a>
-				</li>
-			</ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav" style="margin-left: 50px">
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/index">首页</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/blog">博客</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/file">归档</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/classify">分类</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="/home/aboutMe">关于我</a>
+                </li>
+            </ul>
 
-		</div>
-	</div>
+        </div>
+    </div>
 </nav>
 
-<!--自适应布局-->
 <div class="container-fluid">
     <div class="row">
         <!--主要部分-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
-        	<div class="row">
-				<div id = "title" class="col-md-7 col-md-offset-1"></div>
-				<div id = "dates" class="col-md-4"></div>
-				<div id="content" class="row"></div>
-			</div>
+            <div class="row">
+                <h1 id="title" class="col-md-7 col-md-offset-1"></h1>
+                <div id="dates" class="col-md-4"></div>
+                <div id="content" class="row">
+                    <div id="layout">
+                        <div id="test-editormd-view2">
+                <textarea id="append-test" style="display:none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<script type='text/javascript'>
-	//页面的初始化
-	$(function () {
-		InitData();
-	})
 
-	function InitData() {
-		$.ajax({
-			type : "get",
-			url : "/api/v1/article/info/"+GetQueryString('ID'),
-			success : function(data) {
-				htmlData(data.data)//显示内容
-			}
-		});
-	}
-	;
+<!-- <script src="js/zepto.min.js"></script>
+<script>
+    var jQuery = Zepto;  // 为了避免修改flowChart.js和sequence-diagram.js的源码，所以使用Zepto.js时想支持flowChart/sequenceDiagram就得加上这一句
+</script> -->
+<script type="text/javascript">
+    var testEditormdView, testEditormdView2,markdown;
 
-	function htmlData(data){
-		var title='';
-		title += '<h2 style="font-weight:bold;margin: 0px auto;display: inline">'
-		title += data.title
-		title += '</h2>'
-		$("#title").html(title);
-		var dates='';
-		dates += '<h4>'+data.CreatedAt+'</h4>'
-		$("#dates").html(dates);
-		var content='';
-		content += '<div style="margin: 15px; font-size: 1.3em;">'
-		content += data.content
-		content +=`</div>`
-		$("#content").html(content);
-	};
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    };
 
-	function GetQueryString(name)
-	{
-		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-		var r = window.location.search.substr(1).match(reg);
-		if(r!=null)return  unescape(r[2]); return null;
-	};
+
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/api/v1/article/info/" + GetQueryString('ID'),
+            success: function (data) {
+                $('#title').html(data.data.title);
+                $('#dates').text(data.data.CreatedAt);
+                $('#append-test').text(data.data.content);
+                // $('#tag').val(data.data.Category.name);
+                // $('#desc').val(data.data.desc);
+                // $('#timestamp').val(data.data.timestamp);
+
+                testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                    markdown:data.data.content,//+ "\r\n" + $("#append-test").text(),
+                    //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                    htmlDecode: "style,script,iframe",  // you can filter tags decode
+                    //toc             : false,
+                    tocm: true,    // Using [TOCM]
+                    tocContainer: "#custom-toc-container", // 自定义 ToC 容器层
+                    //gfm             : false,
+                    //tocDropdown     : true,
+                    // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                    emoji: true,
+                    taskList: true,
+                    tex: true,  // 默认不解析
+                    flowChart: true,  // 默认不解析
+                    sequenceDiagram: true,  // 默认不解析
+                });
+
+                testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                    htmlDecode: "style,script,iframe",  // you can filter tags decode
+                    emoji: true,
+                    taskList: true,
+                    tex: true,  // 默认不解析
+                    flowChart: true,  // 默认不解析
+                    sequenceDiagram: true,  // 默认不解析
+                });
+            }
+        });
+
+
+
+    });
+
+
 
 </script>
-
 </body>
 </html>
-
-
-
