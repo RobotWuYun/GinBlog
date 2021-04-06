@@ -151,7 +151,8 @@
             url: "/api/v1/article/info/" + GetQueryString('ID'),
             success: function (data) {
                 $('#title').html(data.data.title);
-                $('#dates').text(data.data.CreatedAt);
+                dataTime = data.data.CreatedAt.split('T')
+                $('#dates').html(dataTime[0]);
                 $('#append-test').text(data.data.content);
                 // $('#tag').val(data.data.Category.name);
                 // $('#desc').val(data.data.desc);

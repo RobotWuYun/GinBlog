@@ -20,6 +20,9 @@
             color: #5a5a5a;
         }
 
+		.righter{
+			float:right
+		}
 
         .main {
             padding: 20px;
@@ -160,6 +163,7 @@
 		$("#tit").text(tit);
 
 		var html='';
+		var dataTime = '';
 		for(var i=0;i<data.length;i++){
 			html+='<div class="row" id="module_'+data[i].ID+'">';
 			html+='<div class="col-md-9">';
@@ -171,18 +175,19 @@
 			html+='</h2>';
 			html+='</div>';
 			html+='<div class="col-md-4">';
-			html+='<h4>'+data[i].CreatedAt+'</h4>';
+			dataTime = data[i].CreatedAt.split('T')
+			html+='<h4>'+dataTime[0]+'</h4>';
 			html+='</div>';
 			html+='</div>';
 			html+='</div>';
 			<!--panel面板的内容，下同-->
 			html+='<div class="panel-body" style="color: #000;">';
-			html+='<p style="font-size: 1.4em;text-indent: 2em;">';
+			html+='<p style="font-size: 1em;text-indent: 2em;">';
 			html+=data[i].desc;
 			html+='</p>';
 			html+='<div style="margin: 15px auto">';
 			url = "/home/blogContext/?ID="+data[i].ID
-			html+='<a href='+url+' style="font-size: 1.8em;">阅读全文</a>';
+			html+='<a href='+url+' style="font-size: 1.5em;" class="righter">阅读全文</a>';
 			html+='</div>';
 			html+='</div>';
 			html+='</div>';
