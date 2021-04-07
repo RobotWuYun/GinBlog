@@ -226,6 +226,9 @@
             data : {pagesize : 10,
                 pagenum : 1,
             },
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("token", localStorage.getItem('TOKEN'));
+            },
             success : function(data) {
                 htmlData(data.data)//处理第一页的数据
                 page = parseInt(data.total/data.pagesize)+1

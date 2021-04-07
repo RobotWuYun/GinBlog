@@ -61,15 +61,30 @@
 <body>
 <div class="container">
 
-    <form role="form" class="form-signin" method="post" action="../index.html">
+    <div class="form-signin">
         <h2 class="form-signin-heading" style="font-weight: bold;">登录</h2>
-        <input type="text" name="username" class="form-control" placeholder="账号">
-        <input type="password" name="password" class="form-control" placeholder="密码">
-        <input type="text" name="verify" class="form-control" placeholder="验证码">
-       
-        <p style="margin-top: 5px"><button class="btn btn-large btn-primary" type="submit">登录</button>
-    </form>
-
+        <input id="username" type="text" name="username" class="form-control" placeholder="账号">
+        <input id="password" type="password" name="password" class="form-control" placeholder="密码">
+        <button class="btn btn-large btn-primary" onclick="login()">登录</button>
+    </div>
+    <script type="text/javascript">
+        function login() {
+            var data = {};
+            data["username"] = $('#username').val();
+            data["password"] = $('#password').val();
+            $.ajax({
+                url: '/api/v1/login',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    localStorage.setItem('TOKEN', data.token)
+                    window.location.href = "/admin"
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>

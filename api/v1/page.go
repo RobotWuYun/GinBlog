@@ -70,7 +70,7 @@ func AdminUser(c *gin.Context) {
 }
 
 //登录页面
-func Login(c *gin.Context) {
+func LoginPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "userLogin.html", gin.H{
 		"title": "login",
 	})

@@ -2,6 +2,7 @@ package routers
 
 import (
 	v1 "GinBlog/api/v1"
+	"GinBlog/middleware"
 	"GinBlog/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -27,27 +28,31 @@ func InitRouter() *gin.Engine {
 	//分类列表
 	router.GET("/categorys/blogList/", v1.ClassifyList)
 	//登录
-	router.GET("/loginbyadmin", v1.Login)
-	//模板页面
+	router.GET("/loginbyadmin", v1.LoginPage)
+	//管理首页(模板页面)
 	router.GET("/admin", v1.ShowAdmin)
-	//管理文章页面
-	router.GET("/admin/article", v1.AdminArticle)
-	//管理分类页面
-	router.GET("/admin/classify", v1.AdminClassify)
-	//管理用户页面
-	router.GET("/admin/user", v1.AdminUser)
-	//编辑文章
-	router.GET("/admin/edit", v1.EditArt)
-	//添加文章
-	router.GET("/admin/add", v1.AddArt)
 
-	auth := router.Group("api/v1")
+	admin := router.Group("admin")
 	{
 		//管理页面
+		//管理文章页面
+		admin.GET("/article", v1.AdminArticle)
+		//管理分类页面
+		admin.GET("/classify", v1.AdminClassify)
+		//管理用户页面
+		admin.GET("/user", v1.AdminUser)
+		//编辑文章
+		admin.GET("/edit", v1.EditArt)
+		//添加文章
+		admin.GET("/add", v1.AddArt)
+	}
 
+	auth := router.Group("api/v1")
+	auth.Use(middleware.JwtToken())
+	{
+		//管理页面
+		auth.GET("/admin", v1.ShowAdmin)
 		//用户
-		//auth.POST("user/add", v1.AddUser)
-		auth.GET("users", v1.GetUsers)
 		auth.PUT("user/:id", v1.EditUser)
 		auth.DELETE("user/:id", v1.DeleteUser)
 		auth.POST("user/add", v1.AddUser)
@@ -55,15 +60,19 @@ func InitRouter() *gin.Engine {
 		auth.POST("category/add", v1.AddCategory)
 		auth.PUT("category/:id", v1.EditCate)
 		auth.DELETE("category/:id", v1.DeleteCate)
-		auth.GET("categorys", v1.GetCate)
 		//文章
 		auth.POST("article/add", v1.AddArticle)
 		auth.PUT("article/:id", v1.EditArticle)
 		auth.DELETE("article/:id", v1.DeleteArticle)
-		auth.GET("articles", v1.GetArticles)
-		auth.GET("articles/list/:cid", v1.GetCateArt)
-		auth.GET("article/info/:id", v1.GetArtInfo)
-
+	}
+	routers := router.Group("api/v1")
+	{
+		routers.GET("users", v1.GetUsers)
+		routers.GET("category", v1.GetCate)
+		routers.GET("article", v1.GetArticles)
+		routers.GET("article/list/:id", v1.GetCateArt)
+		routers.GET("article/info/:id", v1.GetArtInfo)
+		routers.POST("login", v1.Login)
 	}
 	return router
 }

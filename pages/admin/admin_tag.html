@@ -299,6 +299,10 @@
         $.ajax({ //去后台查询第一页数据
             type : "get",
             url : "/api/v1/categorys",
+            contentType: "application/json",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("token", localStorage.getItem('TOKEN'));
+            },
             data : {pagesize : 10,
                 pagenum : 1,
             },
