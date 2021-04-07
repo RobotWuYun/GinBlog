@@ -207,6 +207,12 @@
         $.ajax({
             url: '/api/v1/article/'+artid,
             type: 'DELETE',
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
             success: function (data, status) {
                 InitData();
             }
@@ -215,8 +221,23 @@
 
     //页面的初始化
     $(function () {
-        //分页数据
-        InitData();
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/articlePage",
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
+            success: function(result) {
+                if (result.code == 1007 || result.code == 1006 || result.code == 1005 ||result.code == 1004) {
+                    window.location.href="/loginbyadmin"
+                }
+                //分页数据
+                InitData();
+            }
+        });
     })
 
     function InitData() {//分页函数

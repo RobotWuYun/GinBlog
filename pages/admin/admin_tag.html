@@ -229,6 +229,12 @@
         $.ajax({
             url: '/api/v1/category/'+tagid,
             type: 'DELETE',
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
             success: function (data, status) {
                 InitData();
             }
@@ -258,6 +264,12 @@
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(data),
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
             success: function (data, status) {
                 InitData();
                 editModalHide();
@@ -282,6 +294,12 @@
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(data),
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
             success: function (data, status) {
                 InitData();
                 addModalHide();
@@ -291,18 +309,31 @@
 
     //页面的初始化
     $(function () {
-        //分页数据
-        InitData();
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/classify",
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
+            success: function(result) {
+                if (result.code == 1007 || result.code == 1006 || result.code == 1005 ||result.code == 1004) {
+                    window.location.href="/loginbyadmin"
+                }
+                //分页数据
+                InitData();
+            }
+        });
+
     })
 
     function InitData() {//分页函数
         $.ajax({ //去后台查询第一页数据
             type : "get",
-            url : "/api/v1/categorys",
+            url : "/api/v1/category",
             contentType: "application/json",
-            beforeSend: function (XMLHttpRequest) {
-                XMLHttpRequest.setRequestHeader("token", localStorage.getItem('TOKEN'));
-            },
             data : {pagesize : 10,
                 pagenum : 1,
             },

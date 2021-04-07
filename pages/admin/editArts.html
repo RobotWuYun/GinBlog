@@ -187,6 +187,23 @@
     var testEditor;
 
     $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/edit",
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
+            success: function(result) {
+                if (result.code == 1007 || result.code == 1006 || result.code == 1005 ||result.code == 1004) {
+                    window.location.href="/loginbyadmin"
+                }
+                //分页数据
+                initSelect();
+            }
+        });
         testEditor = editormd("test-editormd", {
             width: "90%",
             height: 640,
@@ -207,12 +224,12 @@
 
             }
         });
-        initSelect();
+
     });
     function initSelect() {
         $.ajax({ //去后台查询第一页数据
             type: "get",
-            url: "/api/v1/categorys",
+            url: "/api/v1/category",
             data: {
                 pagesize: -1,
                 pagenum: -1,
@@ -252,6 +269,12 @@
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(data),
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+            },
             success: function () {
                 window.location.href="/admin/article"
             }

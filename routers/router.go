@@ -41,9 +41,9 @@ func InitRouter() *gin.Engine {
 		admin.GET("/classify", v1.AdminClassify)
 		//管理用户页面
 		admin.GET("/user", v1.AdminUser)
-		//编辑文章
+		//编辑文章页面
 		admin.GET("/edit", v1.EditArt)
-		//添加文章
+		//添加文章页面
 		admin.GET("/add", v1.AddArt)
 	}
 
@@ -52,6 +52,16 @@ func InitRouter() *gin.Engine {
 	{
 		//管理页面
 		auth.GET("/admin", v1.ShowAdmin)
+		auth.GET("/articlePage", v1.AdminArticle)
+		//管理分类页面
+		auth.GET("/classify", v1.AdminClassify)
+		//管理用户页面
+		auth.GET("/user", v1.AdminUser)
+		//编辑文章页面
+		auth.GET("/edit", v1.EditArt)
+		//添加文章页面
+		auth.GET("/add", v1.AddArt)
+
 		//用户
 		auth.PUT("user/:id", v1.EditUser)
 		auth.DELETE("user/:id", v1.DeleteUser)
@@ -69,7 +79,7 @@ func InitRouter() *gin.Engine {
 	{
 		routers.GET("users", v1.GetUsers)
 		routers.GET("category", v1.GetCate)
-		routers.GET("article", v1.GetArticles)
+		routers.GET("articles", v1.GetArticles)
 		routers.GET("article/list/:id", v1.GetCateArt)
 		routers.GET("article/info/:id", v1.GetArtInfo)
 		routers.POST("login", v1.Login)
