@@ -119,75 +119,44 @@
 <!-- <script src="js/jquery-1.11.3.js"></script>
 <script src="js/bootstrap.min.js"></script> -->
     
-<script type="text/javascript">
+<script type='text/javascript'>
     //页面的初始化
     $(function () {
-        //分页数据
         InitData();
     })
-
-    function InitData() {
+    function InitData() {//查询全部分类
         $.ajax({
-            async: false,
-            type: "post",
-            url: "/home/PageData",
-            data: {
-                search: search,
-                pageno:0
-            },
-            success: function (data) {
-                console.log('article数据')
-                console.log(data)
-                var Count = data.count
-                var PageSize = data.pagesize;
-                var Page =data.pagenum;
-                $("#pagination").pagination(Count, {
-                    callback: pageselectCallback,
-                    num_edge_entries: 1,
-                    prev_text: "上一页",
-                    prev_show_always: true,
-                    next_text: "下一页",
-                    next_show_always: true,
-                    items_per_page: PageSize,
-                    current_page: Page,
-                    link_to: '#__aurl=!/home/PageData',
-                    num_display_entries: 4
-                });
+            type : "get",
+            url : "/api/v1/files",
+            success : function(data) {
+                ClassData(data.data)//处理数据渲染页面
             }
         });
     }
-
-    //使用分页插件分页后的回调函数2
-    function pageselectCallback(page_id, jq) {
-        var search = $("#txt_search").val();//名称
-
-        $.ajax({
-            async: false,
-            type: "post",
-            url: "/home/PageNextData",
-            data: {
-                search: search,
-                pageno: (parseInt(page_id) + parseInt(1)),
-            },
-            success: function (data) {
-                console.log('下一页的数据')
-                console.log(data)
-                console.log(data.datalist)
-                htmlData(data.datalist)
-            }
-        });
+    //获取颜色
+    function getColor(number) {
+        let color = number;
+        const blue = parseInt((color)%256);
+        const green = parseInt((color+10)%256);
+        const red = parseInt((color+100)%256);
+        const alpha = 1;
+        return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
-    function htmlData(data){
+    //获取随机数
+    function GetRandomNum(Min,Max)
+    {
+        var Range = Max - Min;
+        var Rand = Math.random();
+        return(Min + Math.round(Rand * Range));
+    }
+    function ClassData(data){
+        console.log('data success')
         var html='';
-        for(var i=0;i<data.length;i++){
-            html+='<tr class="sort-item"  id="module_'+data[i].id+'" value="'+data[i].id+'">';
-            html+='   <td style="text-align: center;width: 350px;"><span class="label label-default" >'+data[i].id+'</span></td>';
-            html+='   <td style="text-align: center;width: 350px;" ><strong>'+data[i].first_name+'</strong></td>';
-            html+='   <td style="text-align: center;width: 350px;" ><strong>'+data[i].last_name+'</strong></td>';
-            html+='   <td style="text-align: center;width: 350px;"><button onclick="editdata('+data[i].id+')">编辑</button><button onclick="deletedata('+data[i].id+')">删除</button></td>';
-            html+='</tr>';
+        var color = 1;
+        for(var num = 0;num < data.length;num++){
+            color = getColor(GetRandomNum(0,256));
+            html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
         }
-
         $("#sortable").html(html);
     }
 

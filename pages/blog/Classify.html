@@ -22,39 +22,16 @@
             $.ajax({
                 type : "get",
                 url : "/api/v1/category",
-                data : {pagesize : 0,
-                    pagenum : 0,
-                },
                 success : function(data) {
-                    ClassData(data.data)//处理数据渲染页面
+                    FilesData(data)//处理数据渲染页面
                 }
             });
         }
-        //获取颜色
-        function getColor(number) {
-            let color = number;
-            const blue = parseInt((color)%256);
-            const green = parseInt((color+10)%256);
-            const red = parseInt((color+100)%256);
-            const alpha = 1;
-            return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-        }
-        //获取随机数
-        function GetRandomNum(Min,Max)
-        {
-            var Range = Max - Min;
-            var Rand = Math.random();
-            return(Min + Math.round(Rand * Range));
-        }
-        function ClassData(data){
-            console.log('data success')
-            var html='';
-            var color = 1;
-            for(var num = 0;num < data.length;num++){
-                color = getColor(GetRandomNum(0,256));
-                html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
+
+        function FilesData(data){
+            for (data) {
+
             }
-            $("#sortable").html(html);
         }
 
     </script>
