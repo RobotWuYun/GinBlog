@@ -66,6 +66,16 @@ func JwtToken() gin.HandlerFunc {
 			return
 		}
 		checkToken := strings.SplitN(tockenHeader, " ", 2)
+		if len(checkToken) == 2 && checkToken[0] == "Bearer" && checkToken[1] == "null" {
+			code = errmsg.ERROR_TOCKEN_EXIST
+			c.JSON(http.StatusOK, gin.H{
+				"code":    code,
+				"message": errmsg.GetErrMsg(code),
+			})
+			c.Abort()
+			return
+		}
+
 		if len(checkToken) != 2 && checkToken[0] != "Bearer" {
 			code = errmsg.ERROR_TOCKEN_TYPE_WRONG
 			c.JSON(http.StatusOK, gin.H{
