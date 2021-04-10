@@ -80,7 +80,7 @@ func InitRouter() *gin.Engine {
 		routers.GET("users", v1.GetUsers)
 		routers.GET("category", v1.GetCate)
 		routers.GET("articles", v1.GetArticles)
-		routers.GET("article/list/:id", v1.GetCateArt)
+		routers.GET("articles/list/:cid", v1.GetCateArt)
 		routers.GET("article/info/:id", v1.GetArtInfo)
 		routers.POST("login", v1.Login)
 		routers.GET("files", v1.GetFile)

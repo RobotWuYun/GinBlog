@@ -26,7 +26,10 @@
     <link href='../../web/css/fonts_googleapis_com/family_Kaushan_Script.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Droid_Serif_400_700_400italic_700italic.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Roboto_Slab_400_100_300_700.css' rel='stylesheet' type='text/css'>
-    
+
+    <link rel="stylesheet" href="../../web/md/examples/css/style.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.preview.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.css"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,11 +46,14 @@
         font-size: 15px;
         font-family: "Microsoft Yahei";
     }
-    #sortable {
-        padding-top: 20px;
+    #test-editormd-view2 {
+        padding-left: 0;
+        padding-right: 430px;
+        margin: 0;
     }
-    #total {
-        padding-top: 10px;
+    #foot {
+        padding-top: 100px;
+        padding-bottom: 20px;
     }
     </style>
 
@@ -108,8 +114,8 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading word-display-custom">classify</div>
-                <div class="intro-lead-in" id="total">欢迎访问上课睡觉觉的博客</div>
+                <div class="intro-heading word-display-custom" id="title">classify</div>
+                <div class="intro-lead-in" id="dates">欢迎访问上课睡觉觉的博客</div>
                 <!-- <div class="word-display-custom">WELCOME!</div> -->
                 <!-- <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a> -->
                 </a>
@@ -120,13 +126,15 @@
 
     <div class="container">
         <div class="row">
-            <!--主要内容-->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
-                <div style="margin: 15px;">
-                    <h4>
-                        分类标签点击传送~
-                    </h4>
-                    <div id="sortable"></div>
+                <div class="row">
+                    <div id="content" class="row">
+                        <div id="layout">
+                            <div id="test-editormd-view2">
+                                <textarea id="append-test" style="display:none;"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,7 +142,7 @@
 
 
     <footer>
-        <div class="container">
+        <div class="container" id="foot">
             <div class="row">
                 <div class="col-md-4">
                     <span class="copyright">Copyright &copy; Your Website 2014</span>
@@ -179,50 +187,75 @@
     <!-- Custom Theme JavaScript -->
     <script src="../../web/js/agency.js"></script>
 
-    <script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
-    <script src="./../web/js/bootstrap-paginator.min.js"></script>
+    <script src="../../web/md/examples/js/jquery.min.js"></script>
+    <script src="../../web/md/lib/marked.min.js"></script>
+    <script src="../../web/md/lib/prettify.min.js"></script>
 
-    <script type='text/javascript'>
-        //页面的初始化
+    <script src="../../web/md/lib/raphael.min.js"></script>
+    <script src="../../web/md/lib/underscore.min.js"></script>
+    <script src="../../web/md/lib/sequence-diagram.min.js"></script>
+    <script src="../../web/md/lib/flowchart.min.js"></script>
+    <script src="../../web/md/lib/jquery.flowchart.min.js"></script>
+
+    <script src="../../web/md/editormd.js"></script>
+    <script type="text/javascript">
+        var testEditormdView, testEditormdView2,markdown;
+
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        };
+
+
         $(function () {
-            InitData();
-        })
-        function InitData() {//查询全部分类
             $.ajax({
-                type : "get",
-                url : "/api/v1/category",
-                success : function(data) {
-                    $("#total").html('At present, there are '+data.total+' categories');
-                    ClassData(data.data)//处理数据渲染页面
+                type: "get",
+                url: "/api/v1/article/info/" + GetQueryString('ID'),
+                success: function (data) {
+                    $('#title').html(data.data.title);
+                    dataTime = data.data.CreatedAt.split('T')
+                    $('#dates').html(dataTime[0]);
+                    $('#append-test').text(data.data.content);
+                    // $('#tag').val(data.data.Category.name);
+                    // $('#desc').val(data.data.desc);
+                    // $('#timestamp').val(data.data.timestamp);
+
+                    testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                        markdown:data.data.content,//+ "\r\n" + $("#append-test").text(),
+                        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                        htmlDecode: "style,script,iframe",  // you can filter tags decode
+                        //toc             : false,
+                        tocm: true,    // Using [TOCM]
+                        tocContainer: "#custom-toc-container", // 自定义 ToC 容器层
+                        //gfm             : false,
+                        //tocDropdown     : true,
+                        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                        emoji: true,
+                        taskList: true,
+                        tex: true,  // 默认不解析
+                        flowChart: true,  // 默认不解析
+                        sequenceDiagram: true,  // 默认不解析
+                    });
+
+                    testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                        htmlDecode: "style,script,iframe",  // you can filter tags decode
+                        emoji: true,
+                        taskList: true,
+                        tex: true,  // 默认不解析
+                        flowChart: true,  // 默认不解析
+                        sequenceDiagram: true,  // 默认不解析
+                    });
                 }
             });
-        }
-        //获取颜色
-        function getColor(number) {
-            let color = number;
-            const blue = parseInt((color)%256);
-            const green = parseInt((color+10)%256);
-            const red = parseInt((color+100)%256);
-            const alpha = 1;
-            return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-        }
-        //获取随机数
-        function GetRandomNum(Min,Max)
-        {
-            var Range = Max - Min;
-            var Rand = Math.random();
-            return(Min + Math.round(Rand * Range));
-        }
-        function ClassData(data){
-            console.log('data success')
-            var html='';
-            var color = 1;
-            for(var num = 0;num < data.length;num++){
-                color = getColor(GetRandomNum(0,256));
-                html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
-            }
-            $("#sortable").html(html);
-        }
+
+
+
+        });
+
+
+
     </script>
 
 </body>

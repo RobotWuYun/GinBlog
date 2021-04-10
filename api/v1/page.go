@@ -15,28 +15,28 @@ func ShowIndex(c *gin.Context) {
 
 //博客列表页
 func ShowBlog(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog_all_articles.html", gin.H{
+	c.HTML(http.StatusOK, "blog_all_article.html", gin.H{
 		"title": "blogs",
 	})
 }
 
 //博客详情页
 func ShowBlogContent(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog_content.html", gin.H{
+	c.HTML(http.StatusOK, "blog_contents.html", gin.H{
 		"title": "blog",
 	})
 }
 
 //关于我页面
 func ShowAboutMe(c *gin.Context) {
-	c.HTML(http.StatusOK, "aboutMe.html", gin.H{
+	c.HTML(http.StatusOK, "aboutMes.html", gin.H{
 		"title": "aboutMe",
 	})
 }
 
 //归档页面
 func ShowFile(c *gin.Context) {
-	c.HTML(http.StatusOK, "admin_main.html", gin.H{
+	c.HTML(http.StatusOK, "archive.html", gin.H{
 		"title": "归档",
 	})
 }
@@ -85,7 +85,7 @@ func Classify(c *gin.Context) {
 
 //博客分类列表页
 func ClassifyList(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog_category_articles.html", gin.H{
+	c.HTML(http.StatusOK, "blog_category_article.html", gin.H{
 		"title": "分类文章列表",
 	})
 }

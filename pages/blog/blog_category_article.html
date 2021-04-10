@@ -45,9 +45,7 @@
     }
     #sortable {
         padding-top: 20px;
-    }
-    #total {
-        padding-top: 10px;
+        padding-left: 220px;
     }
     </style>
 
@@ -108,7 +106,7 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading word-display-custom">classify</div>
+                <div class="intro-heading word-display-custom" id="cate">BLOG</div>
                 <div class="intro-lead-in" id="total">欢迎访问上课睡觉觉的博客</div>
                 <!-- <div class="word-display-custom">WELCOME!</div> -->
                 <!-- <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a> -->
@@ -120,14 +118,11 @@
 
     <div class="container">
         <div class="row">
-            <!--主要内容-->
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
-                <div style="margin: 15px;">
-                    <h4>
-                        分类标签点击传送~
-                    </h4>
-                    <div id="sortable"></div>
-                </div>
+            <div class="col-lg-12">
+                <div id="sortable"></div>
+                <nav style="text-align: center">
+                <ul type="" id="mypage" class="pagination"></ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -179,50 +174,111 @@
     <!-- Custom Theme JavaScript -->
     <script src="../../web/js/agency.js"></script>
 
+    <script type="text/javascript" src="../../web/js/jquery-2.1.1.min.js"></script> 
+    <script src="../../web/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
-    <script src="./../web/js/bootstrap-paginator.min.js"></script>
+    <script src="./../../web/js/bootstrap.min.js"></script>
+    <script src="./../../web/js/bootstrap-paginator.min.js"></script>
 
     <script type='text/javascript'>
-        //页面的初始化
         $(function () {
             InitData();
         })
-        function InitData() {//查询全部分类
-            $.ajax({
-                type : "get",
-                url : "/api/v1/category",
-                success : function(data) {
-                    $("#total").html('At present, there are '+data.total+' categories');
-                    ClassData(data.data)//处理数据渲染页面
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        };
+        function InitData() {//分页函数
+            console.log(GetQueryString('ID'))
+            $.ajax({ //去后台查询第一页数据
+                type: "get",
+                url: "/api/v1/articles/list/"+GetQueryString('ID'),
+                data: {
+                    pagesize: 5,
+                    pagenum: 1,
+                },
+                success: function (data) {
+                    $("#cate").html(data.data[0].Category.name);
+                    $("#total").html('At present, there are '+data.total+' articles');
+                    htmlData(data.data)//处理第一页的数据
+                    page = parseInt(data.total / data.pagesize) + 1
+                    var options = {//根据后台返回的分页相关信息，设置插件参数
+
+                        bootstrapMajorVersion: 3, //如果是bootstrap3版本需要加此标识，并且设置包含分页内容的DOM元素为UL,如果是bootstrap2版本，则DOM包含元素是DIV
+                        currentPage: data.pagenum, //当前页数
+                        totalPages: page, //总页数
+                        numberOfPages: data.pagesize,//每页记录数
+                        itemTexts: function (type, page, current) {//设置分页按钮显示字体样式
+                            switch (type) {
+                                case "first":
+                                    return "首页";
+                                case "prev":
+                                    return "上一页";
+                                case "next":
+                                    return "下一页";
+                                case "last":
+                                    return "末页";
+                                case "page":
+                                    return page;
+                            }
+                        },
+                        onPageClicked: function (event, originalEvent, type, page) {//分页按钮点击事件
+                            $.ajax({ //去后台查询第page页数据
+                                type: "get",
+                                url: "/api/v1/articles",
+                                data: {
+                                    pagesize: 5,
+                                    pagenum: page,
+                                },
+                                success: function (data) {
+                                    htmlData(data.data);//处理数据
+                                }
+                            });
+                        }
+                    };
+                    $('#mypage').bootstrapPaginator(options);//设置分页
                 }
             });
-        }
-        //获取颜色
-        function getColor(number) {
-            let color = number;
-            const blue = parseInt((color)%256);
-            const green = parseInt((color+10)%256);
-            const red = parseInt((color+100)%256);
-            const alpha = 1;
-            return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-        }
-        //获取随机数
-        function GetRandomNum(Min,Max)
-        {
-            var Range = Max - Min;
-            var Rand = Math.random();
-            return(Min + Math.round(Rand * Range));
-        }
-        function ClassData(data){
-            console.log('data success')
-            var html='';
-            var color = 1;
-            for(var num = 0;num < data.length;num++){
-                color = getColor(GetRandomNum(0,256));
-                html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
+        };
+
+        function htmlData(data) {
+            console.log('data usccess')
+            var html = '';
+            var dataTime = '';
+            for (var i = 0; i < data.length; i++) {
+                url = "/home/blogContext/?ID=" + data[i].ID
+                html += '<div class="row" id="module_' + data[i].ID + '">';
+                html += '<div class="col-md-9">';
+                html += '<div class="panel panel-primary" style="border-color: #000">';
+                html += '<div class="panel-heading" style="color: #000;background-color: #000;border-color: #FFFFFF">';
+                html += '<div class="row">';
+                html += '<div class="col-md-7 col-md-offset-1">';
+                html += '<a href=' + url + ' style="font-size: 1.5em;" class="righter"><h4 style="font-weight:bold;margin: 0px auto;display: inline">' + data[i].title;
+                html += '</h4></a>';
+                html += '</div>';
+                html += '<div class="col-md-4">';
+                dataTime = data[i].CreatedAt.split('T')
+                html += '<h6 style="color: #FFFFFF" >' + dataTime[0] + '</h6>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                <!--panel面板的内容，下同-->
+                html += '<div class="panel-body" style="color: #000;">';
+                html += '<p style="font-size: 1em;text-indent: 2em;">';
+                html += data[i].desc;
+                html += '</p>';
+                html += '<div style="margin: 15px auto">';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
             }
             $("#sortable").html(html);
         }
+
     </script>
 
 </body>

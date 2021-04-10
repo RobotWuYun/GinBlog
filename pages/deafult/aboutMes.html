@@ -26,7 +26,9 @@
     <link href='../../web/css/fonts_googleapis_com/family_Kaushan_Script.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Droid_Serif_400_700_400italic_700italic.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Roboto_Slab_400_100_300_700.css' rel='stylesheet' type='text/css'>
-    
+
+    <!-- 标签云所用css -->
+    <link rel="stylesheet" type="text/css" href="../../web/css/jqcloud.css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,11 +45,9 @@
         font-size: 15px;
         font-family: "Microsoft Yahei";
     }
-    #sortable {
-        padding-top: 20px;
-    }
-    #total {
-        padding-top: 10px;
+
+    #word {
+        padding-top: 30px;
     }
     </style>
 
@@ -108,7 +108,7 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading word-display-custom">classify</div>
+                <div class="intro-heading word-display-custom">HI,There</div>
                 <div class="intro-lead-in" id="total">欢迎访问上课睡觉觉的博客</div>
                 <!-- <div class="word-display-custom">WELCOME!</div> -->
                 <!-- <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a> -->
@@ -120,13 +120,24 @@
 
     <div class="container">
         <div class="row">
-            <!--主要内容-->
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-3 main" id="blog_right">
-                <div style="margin: 15px;">
-                    <h4>
-                        分类标签点击传送~
-                    </h4>
-                    <div id="sortable"></div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6" id="word" style="font-size: 18px">
+                        <p>本人90后，南京某邮电类高校小硕。</p>
+                        <p>
+                            联系邮箱：
+                            <a href="mailto:test@test.com">test@test.com</a>
+                        </p>
+                        <p>
+                            Github:
+                            <a href="mailto:test@test.com">test@test.com</a>
+                        </p>
+                        <p>本站结构介绍：</p>
+                        <p>标签云内显示了我的兴趣领域</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="tagCloud" style="width: 300px; height: 200px;margin-left: -40px;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -178,51 +189,26 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../../web/js/agency.js"></script>
+    <script src="../../web/js/jquery-1.11.3.js"></script>
+    <script src="../../web/js/bootstrap.min.js"></script>
+    <!-- 标签云所用js -->
+    <script type="text/javascript" src="../../web/js/jqcloud-1.0.4.min.js"></script>
 
-    <script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
-    <script src="./../web/js/bootstrap-paginator.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            // 标签云
+            var word_array = [
+                {text: "Lorem", weight: 15},
+                {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+                {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
+                {text: "Sit", weight: 7},
+                {text: "Amet", weight: 5}
+                // ...as many words as you want
+            ];
 
-    <script type='text/javascript'>
-        //页面的初始化
-        $(function () {
-            InitData();
-        })
-        function InitData() {//查询全部分类
-            $.ajax({
-                type : "get",
-                url : "/api/v1/category",
-                success : function(data) {
-                    $("#total").html('At present, there are '+data.total+' categories');
-                    ClassData(data.data)//处理数据渲染页面
-                }
-            });
-        }
-        //获取颜色
-        function getColor(number) {
-            let color = number;
-            const blue = parseInt((color)%256);
-            const green = parseInt((color+10)%256);
-            const red = parseInt((color+100)%256);
-            const alpha = 1;
-            return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-        }
-        //获取随机数
-        function GetRandomNum(Min,Max)
-        {
-            var Range = Max - Min;
-            var Rand = Math.random();
-            return(Min + Math.round(Rand * Range));
-        }
-        function ClassData(data){
-            console.log('data success')
-            var html='';
-            var color = 1;
-            for(var num = 0;num < data.length;num++){
-                color = getColor(GetRandomNum(0,256));
-                html+='<a style="font-size: 30px;color:'+color+'" href="/categorys/blogList?ID='+data[num].id+'">'+data[num].name+'</a>&emsp;'
-            }
-            $("#sortable").html(html);
-        }
+            // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+            $("#tagCloud").jQCloud(word_array);
+        });
     </script>
 
 </body>
