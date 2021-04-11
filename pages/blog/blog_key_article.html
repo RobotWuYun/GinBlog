@@ -119,6 +119,7 @@
                             <span class="input-group-addon" id="search-submit" onclick="searchKey()"><i class="glyphicon glyphicon-search"></i></span>
                         </p>
                     </li>
+
                 </ul>
             </div>
             <!-- /.navbar-collapse   -->
@@ -214,17 +215,28 @@
             var r = window.location.search.substr(1).match(reg);
             if(r!=null)return  unescape(r[2]); return null;
         };
+        //处理中文字符
+        function getParams(key) {
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            //如果地址栏中出现中文则进行编码
+            var r = encodeURI(window.location.search).substr(1).match(reg);
+            if (r != null) {
+                //将中文编码的字符重新变成中文
+                return decodeURI(unescape(r[2]));
+            }
+            return key;
+        };
         function InitData() {//分页函数
-            console.log(GetQueryString('ID'))
+            console.log(GetQueryString('tag'))
             $.ajax({ //去后台查询第一页数据
                 type: "get",
-                url: "/api/v1/cateArts/"+GetQueryString('ID'),
+                url:  "/api/v1/keyArts/"+getParams('key'),
                 data: {
                     pagesize: 5,
                     pagenum: 1,
                 },
                 success: function (data) {
-                    $("#cate").html(data.data[0].Category.name);
+                    $("#cate").html("关键词:"+getParams('key'));
                     $("#total").html('At present, there are '+data.total+' articles');
                     htmlData(data.data)//处理第一页的数据
                     page = parseInt(data.total / data.pagesize) + 1
@@ -251,7 +263,7 @@
                         onPageClicked: function (event, originalEvent, type, page) {//分页按钮点击事件
                             $.ajax({ //去后台查询第page页数据
                                 type: "get",
-                                url: "/api/v1/cateArts/"+GetQueryString('ID'),
+                                url: "/api/v1/keyArts/"+getParams('key'),
                                 data: {
                                     pagesize: 5,
                                     pagenum: page,
@@ -266,11 +278,9 @@
                 }
             });
         };
-
         function searchKey() {
             window.location.href="/search/blogList?key="+$("#search-input").val()
         }
-
         function htmlData(data) {
             console.log('data usccess')
             var html = '';

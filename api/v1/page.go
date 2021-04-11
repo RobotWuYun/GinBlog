@@ -97,6 +97,12 @@ func TagList(c *gin.Context) {
 	})
 }
 
+func KeyList(c *gin.Context) {
+	c.HTML(http.StatusOK, "blog_key_article.html", gin.H{
+		"title": "搜索列表",
+	})
+}
+
 //博客分类列表页
 func ClassifyList(c *gin.Context) {
 	c.HTML(http.StatusOK, "blog_category_article.html", gin.H{

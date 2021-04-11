@@ -10,7 +10,7 @@ import (
 )
 
 func GetFile(c *gin.Context) {
-	data, code, total := model.GetArt(-1, -1)
+	data, code, total := model.GetArtAsc(-1, -1)
 
 	var fileMap utils.Multimap
 	fileMap = make(utils.Multimap)

@@ -29,8 +29,10 @@ func InitRouter() *gin.Engine {
 	router.GET("/categorys/blogList/", v1.ClassifyList)
 	//tag
 	router.GET("/home/tag", v1.Tag)
-	//分类列表
+	//tag列表
 	router.GET("/tag/blogList/", v1.TagList)
+	//搜索列表
+	router.GET("/search/blogList/", v1.KeyList)
 	//登录
 	router.GET("/loginbyadmin", v1.LoginPage)
 	//管理首页(模板页面)
@@ -88,8 +90,11 @@ func InitRouter() *gin.Engine {
 		routers.GET("article/info/:id", v1.GetArtInfo)
 		routers.POST("login", v1.Login)
 		routers.GET("files", v1.GetFile)
+		//包含tag的文章
 		routers.GET("tagArts/:tag", v1.GetTagArt)
+		//所有tag
 		routers.GET("tags", v1.GetTags)
+		//搜索关键词相关所有文章
 		routers.GET("keyArts/:key", v1.GetKeyArt)
 	}
 	return router

@@ -30,7 +30,7 @@ func CreateArt(data *Article) int {
 func GetCateArt(cid int, pageSize int, pageNum int) ([]Article, int, int) {
 	var cateArtiList []Article
 	var total int
-	err := db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("cid=?", cid).Find(&cateArtiList).Count(&total).Error
+	err := db.Order("created_at desc").Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("cid=?", cid).Find(&cateArtiList).Count(&total).Error
 	if err != nil {
 		return nil, errmsg.ERROR_CATE_NOT_EXIST, 0
 	}
@@ -51,7 +51,19 @@ func GetArtInfo(id int) (Article, int) {
 func GetArt(pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
 	var total int
-	err := db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Error
+	err := db.Order("created_at desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Error
+	db.Model(&articleList).Count(&total)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errmsg.ERROR, 0
+	}
+	return articleList, errmsg.SUCCSE, total
+}
+
+//查询文章列表
+func GetArtAsc(pageSize int, pageNum int) ([]Article, int, int) {
+	var articleList []Article
+	var total int
+	err := db.Order("created_at").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Error
 	db.Model(&articleList).Count(&total)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.ERROR, 0
@@ -63,7 +75,7 @@ func GetArt(pageSize int, pageNum int) ([]Article, int, int) {
 func GetTagArt(tag string, pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
 	var total int
-	err := db.Where("tag LIKE ?", "%"+tag+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
+	err := db.Order("created_at desc").Where("tag LIKE ?", "%"+tag+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.ERROR, 0
 	}
@@ -74,7 +86,7 @@ func GetTagArt(tag string, pageSize int, pageNum int) ([]Article, int, int) {
 func GetKeyArt(key string, pageSize int, pageNum int) ([]Article, int, int) {
 	var articleList []Article
 	var total int
-	err := db.Where("title LIKE ?", "%"+key+"%").Or("tag LIKE ?", "%"+key+"%").Or("`desc` LIKE ?", "%"+key+"%").Or("`timestamp` LIKE ?", "%"+key+"%").Or("content LIKE ?", "%"+key+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
+	err := db.Order("created_at desc").Where("title LIKE ?", "%"+key+"%").Or("tag LIKE ?", "%"+key+"%").Or("`desc` LIKE ?", "%"+key+"%").Or("`timestamp` LIKE ?", "%"+key+"%").Or("content LIKE ?", "%"+key+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.ERROR, 0
 	}

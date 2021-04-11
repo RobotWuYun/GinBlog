@@ -47,6 +47,21 @@
         padding-top: 20px;
         padding-left: 220px;
     }
+    #search-input {
+        height:30px;
+        border: none;
+        background: lightgray;
+        opacity: .5;
+    }
+    #search-submit {
+        border: none;
+        background: none;
+    }
+    #so{
+        padding-top: 10px;
+        width: 200px;
+
+    }
     </style>
 
 </head>
@@ -97,6 +112,12 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="/home/aboutMe">About</a>
+                    </li>
+                    <li class="col-sm-5" id="so">
+                        <p class="input-group">
+                            <input type="text" id="search-input" class="form-control"/>
+                            <span class="input-group-addon" id="search-submit" onclick="searchKey()"><i class="glyphicon glyphicon-search"></i></span>
+                        </p>
                     </li>
                 </ul>
             </div>
@@ -204,6 +225,9 @@
             }
             return key;
         };
+        function searchKey() {
+            window.location.href="/search/blogList?key="+$("#search-input").val()
+        }
         function InitData() {//分页函数
             console.log(GetQueryString('tag'))
             $.ajax({ //去后台查询第一页数据
