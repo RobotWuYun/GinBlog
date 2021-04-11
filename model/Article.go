@@ -7,13 +7,14 @@ import (
 
 type Article struct {
 	gorm.Model
-	Title     string   `gorm:"type:varchar(100);not null" json:"title"`
-	Cid       int      `gorm:"type:int;not null" json:"cid"`
-	Desc      string   `gorm:"type:varchar(200)" json:"desc"`
-	Content   string   `gorm:"type:longtext" json:"content"`
-	Img       string   `gorm:"type:varchar(100)" json:"img"`
-	Timestamp string   `gorm:"type:varchar(10)" json:"timestamp"`
-	Category  Category `gorm:"foreignkey:Cid"`
+	Title     string `gorm:"type:varchar(100);not null" json:"title"`
+	Cid       int    `gorm:"type:int;not null" json:"cid"`
+	Desc      string `gorm:"type:varchar(200)" json:"desc"`
+	Content   string `gorm:"type:longtext" json:"content"`
+	Tag       string `gorm:"type:varchar(100)" json:"tag"`
+	Timestamp string `gorm:"type:varchar(10)" json:"timestamp"`
+
+	Category Category `gorm:"foreignkey:Cid"`
 }
 
 //新增文章
@@ -58,6 +59,28 @@ func GetArt(pageSize int, pageNum int) ([]Article, int, int) {
 	return articleList, errmsg.SUCCSE, total
 }
 
+//查询有tag的文章列表
+func GetTagArt(tag string, pageSize int, pageNum int) ([]Article, int, int) {
+	var articleList []Article
+	var total int
+	err := db.Where("tag LIKE ?", "%"+tag+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errmsg.ERROR, 0
+	}
+	return articleList, errmsg.SUCCSE, total
+}
+
+//关键字查询-文章列表
+func GetKeyArt(key string, pageSize int, pageNum int) ([]Article, int, int) {
+	var articleList []Article
+	var total int
+	err := db.Where("title LIKE ?", "%"+key+"%").Or("tag LIKE ?", "%"+key+"%").Or("`desc` LIKE ?", "%"+key+"%").Or("`timestamp` LIKE ?", "%"+key+"%").Or("content LIKE ?", "%"+key+"%").Limit(pageSize).Offset((pageNum - 1) * pageSize).Preload("Category").Find(&articleList).Count(&total).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errmsg.ERROR, 0
+	}
+	return articleList, errmsg.SUCCSE, total
+}
+
 //编辑文章
 func EditArt(id int, data *Article) int {
 	var art Article
@@ -66,7 +89,7 @@ func EditArt(id int, data *Article) int {
 	maps["cid"] = data.Cid
 	maps["desc"] = data.Desc
 	maps["content"] = data.Content
-	maps["img"] = data.Img
+	maps["tag"] = data.Tag
 	maps["timestamp"] = data.Timestamp
 	err = db.Model(&art).Where("id = ?", id).Updates(maps).Error
 	if err != nil {

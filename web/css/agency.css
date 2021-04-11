@@ -161,7 +161,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 header {
 	background-image: url(../img/header-bg.jpg);
-	background-repeat: none;
+	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center center;
 	-webkit-background-size: cover;
@@ -269,8 +269,8 @@ aside{
 }
 
 #second_part {
-	background-image: url(../img/second_part_img.jpg);
-	background-repeat: none;
+	background-image: url(../img/picture_wall/2.jpg);
+	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center center;
 	-webkit-background-size: cover;
@@ -278,7 +278,7 @@ aside{
 	background-size: cover;
 	-o-background-size: cover;
 	text-align: center;
-	color: #fff
+	color: #fff;
 	padding-top: 100px;
 }
 
@@ -726,5 +726,5 @@ img::-moz-selection {
 background:0 0
 }
 body {
-	webkit-tap-highlight-color: #fed136
+		webkit-tap-highlight-color: #fed136
 }

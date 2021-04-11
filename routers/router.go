@@ -27,6 +27,10 @@ func InitRouter() *gin.Engine {
 	router.GET("/home/classify", v1.Classify)
 	//分类列表
 	router.GET("/categorys/blogList/", v1.ClassifyList)
+	//tag
+	router.GET("/home/tag", v1.Tag)
+	//分类列表
+	router.GET("/tag/blogList/", v1.TagList)
 	//登录
 	router.GET("/loginbyadmin", v1.LoginPage)
 	//管理首页(模板页面)
@@ -80,10 +84,13 @@ func InitRouter() *gin.Engine {
 		routers.GET("users", v1.GetUsers)
 		routers.GET("category", v1.GetCate)
 		routers.GET("articles", v1.GetArticles)
-		routers.GET("articles/list/:cid", v1.GetCateArt)
+		routers.GET("cateArts/:cid", v1.GetCateArt)
 		routers.GET("article/info/:id", v1.GetArtInfo)
 		routers.POST("login", v1.Login)
 		routers.GET("files", v1.GetFile)
+		routers.GET("tagArts/:tag", v1.GetTagArt)
+		routers.GET("tags", v1.GetTags)
+		routers.GET("keyArts/:key", v1.GetKeyArt)
 	}
 	return router
 }

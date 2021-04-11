@@ -83,6 +83,20 @@ func Classify(c *gin.Context) {
 	})
 }
 
+//tag页面
+func Tag(c *gin.Context) {
+	c.HTML(http.StatusOK, "Tags.html", gin.H{
+		"title": "标签",
+	})
+}
+
+//博客分tag列表页
+func TagList(c *gin.Context) {
+	c.HTML(http.StatusOK, "blog_tag_article.html", gin.H{
+		"title": "标签文章列表",
+	})
+}
+
 //博客分类列表页
 func ClassifyList(c *gin.Context) {
 	c.HTML(http.StatusOK, "blog_category_article.html", gin.H{

@@ -98,6 +98,9 @@
                         <a class="page-scroll" href="/home/classify">Classify</a>
                     </li>
                     <li>
+                        <a class="page-scroll" href="/home/tag">Tag</a>
+                    </li>
+                    <li>
                         <a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
                     </li>
                     <li>
@@ -116,6 +119,7 @@
             <div class="intro-text">
                 <div class="intro-heading word-display-custom" id="title">classify</div>
                 <div class="intro-lead-in" id="dates">欢迎访问上课睡觉觉的博客</div>
+                <div class="intro-lead-in" style="font-size: 20px;" id="tags"></div>
                 <!-- <div class="word-display-custom">WELCOME!</div> -->
                 <!-- <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a> -->
                 </a>
@@ -218,6 +222,19 @@
                     dataTime = data.data.CreatedAt.split('T')
                     $('#dates').html(dataTime[0]);
                     $('#append-test').text(data.data.content);
+                    if(data.data.tag != "") {
+                        html = '#'
+                        tags = data.data.tag.split(',')
+                        for (var j = 0; j < tags.length; j++) {
+                            url = '/tag/blogList?tag='+tags[j]
+                            html += '<a href="'+url+'">'
+                            html += tags[j]
+                            html +='</a>,'
+                        }
+                        $('#tags').html(html);
+                    }
+
+
                     // $('#tag').val(data.data.Category.name);
                     // $('#desc').val(data.data.desc);
                     // $('#timestamp').val(data.data.timestamp);

@@ -149,10 +149,12 @@
                                 <span class="input-group-addon">标题</span>
                                 <input type="text" class="form-control" id="title">
                                 <span class="input-group-addon">分类</span>
-                                <select class="form-control"data-live-search="true" id="tag-select">
+                                <select class="form-control"data-live-search="true" id="categories-select">
                                 </select>
                                 <span class="input-group-addon">时间</span>
                                 <input type="text" class="form-control" id="timestamp">
+                                <span class="input-group-addon">标签</span>
+                                <input type="text" class="form-control" id="tag">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon">描述</span>
@@ -243,8 +245,9 @@
     function addArts() {
         var data = {};
         data["title"] = $('#title').val();
-        data["cid"] = Number($("#tag-select option:selected").attr("id"));
+        data["cid"] = Number($("#categories-select option:selected").attr("id"));
         data["desc"] = $('#desc').val();
+        data["tag"] = $('#tag').val();
         data["timestamp"] = $('#timestamp').val();
         data["content"] = testEditor.getMarkdown();
         $.ajax({

@@ -109,7 +109,7 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading word-display-custom">BLOG</div>
+                <div class="intro-heading word-display-custom" id="cate">BLOG</div>
                 <div class="intro-lead-in" id="total">欢迎访问上课睡觉觉的博客</div>
                 <!-- <div class="word-display-custom">WELCOME!</div> -->
                 <!-- <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a> -->
@@ -177,22 +177,44 @@
     <!-- Custom Theme JavaScript -->
     <script src="../../web/js/agency.js"></script>
 
+    <script type="text/javascript" src="../../web/js/jquery-2.1.1.min.js"></script> 
+    <script src="../../web/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../web/js/bootstrap-paginator.js"></script> 
-    <script src="./../web/js/bootstrap-paginator.min.js"></script>
+    <script src="./../../web/js/bootstrap.min.js"></script>
+    <script src="./../../web/js/bootstrap-paginator.min.js"></script>
 
     <script type='text/javascript'>
         $(function () {
             InitData();
         })
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        };
+        //处理中文字符
+        function getParams(key) {
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            //如果地址栏中出现中文则进行编码
+            var r = encodeURI(window.location.search).substr(1).match(reg);
+            if (r != null) {
+                //将中文编码的字符重新变成中文
+                return decodeURI(unescape(r[2]));
+            }
+            return key;
+        };
         function InitData() {//分页函数
+            console.log(GetQueryString('tag'))
             $.ajax({ //去后台查询第一页数据
                 type: "get",
-                url: "/api/v1/articles",
+                url:  "/api/v1/tagArts/"+getParams('tag'),
                 data: {
                     pagesize: 5,
                     pagenum: 1,
                 },
                 success: function (data) {
+                    $("#cate").html(getParams('tag'));
                     $("#total").html('At present, there are '+data.total+' articles');
                     htmlData(data.data)//处理第一页的数据
                     page = parseInt(data.total / data.pagesize) + 1
@@ -219,7 +241,7 @@
                         onPageClicked: function (event, originalEvent, type, page) {//分页按钮点击事件
                             $.ajax({ //去后台查询第page页数据
                                 type: "get",
-                                url: "/api/v1/articles",
+                                url: "/api/v1/tagArts/"+getParams('tag'),
                                 data: {
                                     pagesize: 5,
                                     pagenum: page,

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 //todo 添加文章
@@ -36,6 +37,28 @@ func GetCateArt(c *gin.Context) {
 	}
 
 	data, code, total := model.GetCateArt(cid, pageSize, pageNum)
+	c.JSON(http.StatusOK, gin.H{
+		"status":   code,
+		"data":     data,
+		"total":    total,
+		"pagesize": pageSize,
+		"pagenum":  pageNum,
+		"message":  errmsg.GetErrMsg(code),
+	})
+}
+
+// todo 查询包含tag的所有文章
+func GetTagArt(c *gin.Context) {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	tag := c.Param("tag")
+	if pageSize == 0 {
+		pageSize = -1
+	}
+	if pageNum == 0 {
+		pageNum = -1
+	}
+	data, code, total := model.GetTagArt(tag, pageSize, pageNum)
 	c.JSON(http.StatusOK, gin.H{
 		"status":   code,
 		"data":     data,
@@ -98,6 +121,53 @@ func DeleteArticle(c *gin.Context) {
 	code = model.DeleteArt(id)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
+
+// todo 查询包含key的所有文章
+func GetKeyArt(c *gin.Context) {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	key := c.Param("key")
+	if pageSize == 0 {
+		pageSize = -1
+	}
+	if pageNum == 0 {
+		pageNum = -1
+	}
+	data, code, total := model.GetKeyArt(key, pageSize, pageNum)
+	c.JSON(http.StatusOK, gin.H{
+		"status":   code,
+		"data":     data,
+		"total":    total,
+		"pagesize": pageSize,
+		"pagenum":  pageNum,
+		"message":  errmsg.GetErrMsg(code),
+	})
+}
+
+// todo 查询所有tag
+func GetTags(c *gin.Context) {
+	data, code, _ := model.GetArt(-1, -1)
+	tagMap := make(map[string]int)
+	var tags []string
+	for _, val := range data {
+		tags = strings.Split(val.Tag, ",")
+		for _, val := range tags {
+			num, ok := tagMap[val]
+			if ok {
+				tagMap[val] = num + 1
+			} else {
+				tagMap[val] = 1
+			}
+		}
+	}
+	delete(tagMap, "")
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    tagMap,
+		"total":   len(tagMap),
 		"message": errmsg.GetErrMsg(code),
 	})
 }

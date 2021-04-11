@@ -90,6 +90,9 @@
                         <a class="page-scroll" href="/home/classify">Classify</a>
                     </li>
                     <li>
+                        <a class="page-scroll" href="/home/tag">Tag</a>
+                    </li>
+                    <li>
                         <a class="page-scroll" href="https://github.com/RobotWuYun">Github</a>
                     </li>
                     <li>
@@ -194,7 +197,7 @@
             console.log(GetQueryString('ID'))
             $.ajax({ //去后台查询第一页数据
                 type: "get",
-                url: "/api/v1/articles/list/"+GetQueryString('ID'),
+                url: "/api/v1/cateArts/"+GetQueryString('ID'),
                 data: {
                     pagesize: 5,
                     pagenum: 1,
@@ -227,7 +230,7 @@
                         onPageClicked: function (event, originalEvent, type, page) {//分页按钮点击事件
                             $.ajax({ //去后台查询第page页数据
                                 type: "get",
-                                url: "/api/v1/articles",
+                                url: "/api/v1/cateArts/"+GetQueryString('ID'),
                                 data: {
                                     pagesize: 5,
                                     pagenum: page,
@@ -268,6 +271,18 @@
                 html += '<div class="panel-body" style="color: #000;">';
                 html += '<p style="font-size: 1em;text-indent: 2em;">';
                 html += data[i].desc;
+                html += '</p>';
+                html += '<p style="font-size: 1em;text-indent: 2em;">';
+                if(data[i].tag != "") {
+                    html += '#'
+                    tags = data[i].tag.split(',')
+                    for (var j = 0; j < tags.length; j++) {
+                        url = '/tag/blogList?tag='+tags[j]
+                        html += '<a href="'+url+'">'
+                        html += tags[j]
+                        html +='</a>,'
+                    }
+                }
                 html += '</p>';
                 html += '<div style="margin: 15px auto">';
                 html += '</div>';
