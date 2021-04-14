@@ -253,8 +253,8 @@
     }
 
     function editPassword(){
-        if ($("#new-password").val()=="") {
-            alert("新密码不能为空");
+        if ($("#new-password").val()==""||$("#old-password").val()=="") {
+            alert("密码不能为空");
         } else if ($("#new-password").val()!=$("#reinput").val()) {
             alert("两次新密码不一致");
         } else {
@@ -262,7 +262,7 @@
             data["new"] = $("#new-password").val();
             data["old"] = $("#old-password").val()
             $.ajax({
-                url: '/api/v1/user/',
+                url: '/api/v1/editPw/',
                 type: 'PUT',
                 dataType: 'json',
                 contentType: 'application/json;charset=UTF-8',

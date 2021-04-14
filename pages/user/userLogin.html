@@ -79,8 +79,13 @@
                 contentType: 'application/json;charset=UTF-8',
                 data: JSON.stringify(data),
                 success: function (data) {
-                    localStorage.setItem('TOKEN', data.token)
-                    window.location.href = "/admin"
+                    if (data.status != 200) {
+                        alert(data.message);
+                    } else {
+                        localStorage.setItem('TOKEN', data.token)
+                        window.location.href = "/admin"
+                    }
+
                 }
             });
         }

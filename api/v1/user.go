@@ -118,36 +118,27 @@ func EditUser(c *gin.Context) {
 	})
 }
 
-/*
 //修改密码
 func EditPW(c *gin.Context) {
-	c.Request.
-	c.ShouldBindJSON(&Pagedata)
+	pagedata := make(map[string]string)
+	c.ShouldBindJSON(&pagedata)
 	var data model.User
 	var code int
-	info,code := middleware.GetUserInfo(c)
+	info, code := middleware.GetUserInfo(c)
 	if code == 200 {
 		data, code = model.GetUserByName(info["username"])
-		if Pagedata. {
-			if Pagedata.Username == data.Username {
-				model.EditUser(int(data.ID), &Pagedata)
-			}else {
-				code = model.CheckUser(Pagedata.Username)
-				if code == errmsg.ERROR_USERNAME_USED {
-					c.Abort()
-				}else {
-					model.EditUser(int(data.ID), &Pagedata)
-				}
-			}
+		if pagedata["old"] == data.Password {
+			data.Password = pagedata["new"]
+			model.EditUser(int(data.ID), &data)
 		} else {
-			code = errmsg.ERROR_USERNAME_NOT_NULL
+			code = errmsg.ERROR_PASSWORD_WROING
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),
 	})
-}*/
+}
 
 //删除用户
 func DeleteUser(c *gin.Context) {

@@ -77,7 +77,7 @@ func InitRouter() *gin.Engine {
 		auth.DELETE("user/:id", v1.DeleteUser)
 		auth.POST("user/add", v1.AddUser)
 		//修改密码
-		//auth.PUT("password", v1.EditPW)
+		auth.PUT("editPw", v1.EditPW)
 		//分类
 		auth.POST("category/add", v1.AddCategory)
 		auth.PUT("category/:id", v1.EditCate)

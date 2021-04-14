@@ -69,6 +69,9 @@ func EditUser(id int, data *User) int {
 	var maps = make(map[string]interface{})
 	maps["username"] = data.Username
 	maps["resume"] = data.Resume
+	if data.Password != "" {
+		maps["password"] = data.Password
+	}
 	err = db.Model(&user).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR
