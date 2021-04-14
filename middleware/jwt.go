@@ -51,6 +51,28 @@ func CheckToken(tocken string) (*MyClaims, int) {
 	}
 }
 
+//从token获取用户信息
+func GetUserInfo(c *gin.Context) (jwt.MapClaims, int) {
+	tockenHeader := c.Request.Header.Get("Authorization")
+	checkToken := strings.SplitN(tockenHeader, " ", 2)
+	tokenInfo, _ := jwt.Parse(checkToken[1], func(token *jwt.Token) (i interface{}, e error) {
+		return []byte(utils.JwtKey), nil
+	})
+	err := tokenInfo.Claims.Valid()
+	if err != nil {
+		return nil, errmsg.ERROR
+	} else {
+		finToken := tokenInfo.Claims.(jwt.MapClaims)
+		//校验下token是否过期
+		succ := finToken.VerifyExpiresAt(time.Now().Unix(), true)
+		if succ != true {
+			return nil, errmsg.ERROR_TOCKEN_RUNTIME
+		} else {
+			return finToken, errmsg.SUCCSE
+		}
+	}
+}
+
 //jwt中间件
 func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {

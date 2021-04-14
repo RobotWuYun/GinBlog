@@ -18,6 +18,8 @@ var (
 	DbUser     string
 	DbPassWord string
 	DbName     string
+
+	Id string
 )
 
 func init() { //初始化方法
@@ -27,6 +29,7 @@ func init() { //初始化方法
 	}
 	LoadServer(file)
 	LoadDataBase(file)
+	LoadUser(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -42,4 +45,8 @@ func LoadDataBase(file *ini.File) {
 	DbUser = file.Section("database").Key("DbUser").MustString("ginblog")
 	DbPassWord = file.Section("database").Key("DbPassWord").MustString("admin123")
 	DbName = file.Section("database").Key("DbName").MustString("ginblog")
+}
+
+func LoadUser(file *ini.File) {
+	Id = file.Section("user").Key("Id").MustString("1")
 }

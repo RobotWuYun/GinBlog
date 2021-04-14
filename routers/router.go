@@ -51,6 +51,8 @@ func InitRouter() *gin.Engine {
 		admin.GET("/edit", v1.EditArt)
 		//添加文章页面
 		admin.GET("/add", v1.AddArt)
+		//编辑用户页面
+		admin.GET("/editUser", v1.EditUserPage)
 	}
 
 	auth := router.Group("api/v1")
@@ -67,11 +69,15 @@ func InitRouter() *gin.Engine {
 		auth.GET("/edit", v1.EditArt)
 		//添加文章页面
 		auth.GET("/add", v1.AddArt)
+		//获取UserInfo
+		auth.GET("user/infos", v1.GetUserInfos)
 
 		//用户
-		auth.PUT("user/:id", v1.EditUser)
+		auth.PUT("user", v1.EditUser)
 		auth.DELETE("user/:id", v1.DeleteUser)
 		auth.POST("user/add", v1.AddUser)
+		//修改密码
+		//auth.PUT("password", v1.EditPW)
 		//分类
 		auth.POST("category/add", v1.AddCategory)
 		auth.PUT("category/:id", v1.EditCate)
@@ -96,6 +102,8 @@ func InitRouter() *gin.Engine {
 		routers.GET("tags", v1.GetTags)
 		//搜索关键词相关所有文章
 		routers.GET("keyArts/:key", v1.GetKeyArt)
+		//获取用户信息
+		routers.GET("user/info", v1.GetUserInfo)
 	}
 	return router
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>但行好事,莫问前程</title>
     <link rel="stylesheet" href="../../web/md/examples/css/style.css"/>
-    <link rel="stylesheet" href="../../web/md//css/editormd.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.css"/>
     <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
 
     <meta charset="utf-8">
@@ -141,24 +141,12 @@
                 <div class="col-md-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title">文章</h3>
+                            <h3 class="panel-title">用户</h3>
                         </div>
                         <div class="panel-body">
-
                             <div class="input-group">
-                                <span class="input-group-addon">标题</span>
-                                <input type="text" class="form-control" id="title">
-                                <span class="input-group-addon">分类</span>
-                                <select class="form-control"data-live-search="true" id="tag-select">
-                                </select>
-                                <span class="input-group-addon">时间</span>
-                                <input type="text" class="form-control" id="timestamp">
-                                <span class="input-group-addon">标签</span>
-                                <input type="text" class="form-control" id="tags">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">描述</span>
-                                <input type="text" class="form-control" id="desc">
+                                <span class="input-group-addon">用户名</span>
+                                <input type="text" class="form-control" id="username">
                             </div>
                             <div id="layout">
                                 <div id="test-editormd">
@@ -168,14 +156,39 @@
                         </div>
                     </div>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" onclick="editArts()">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">修改密码</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" onclick="editUser()">
                         保存
                     </button>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" onclick=window.history.back(-1)>
+                    <a href="/admin"><button type="button" class="btn btn-danger">
                         取消
                     </button>
-
+                    </a>
+                    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">修改</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" id="old-password" placeholder="old password">
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" id="new-password" placeholder="new password">
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" id="reinput" placeholder="reinput">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="editPassword()">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,40 +200,27 @@
 <script src="../../web/md/editormd.min.js"></script>
 <script type="text/javascript">
     var testEditor;
-
     $(function () {
-        $.ajax({
-            type: "GET",
-            url: "/api/v1/edit",
-            beforeSend: function(request) {
-                request.setRequestHeader("Accept", "application/json;charset=UTF-8");
-                //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
-                request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
-            },
-            success: function(result) {
-                if (result.code == 1007 || result.code == 1006 || result.code == 1005 ||result.code == 1004) {
-                    window.location.href="/loginbyadmin"
-                }
-                //分页数据
-                initSelect();
-            }
-        });
         testEditor = editormd("test-editormd", {
             width: "90%",
-            height: 640,
+            height: 450,
             syncScrolling: "single",
             path: "./../web/md/lib/",
             onload : function() {
                 $.ajax({
                     type : "get",
-                    url : "/api/v1/article/info/"+GetQueryString('ID'),
+                    url : "/api/v1/user/infos",
+                    beforeSend: function(request) {
+                        request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                        //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+                    },
                     success : function(data) {
-                        $('#title').val(data.data.title);
-                        $('#tag').val(data.data.Category.name);
-                        $('#desc').val(data.data.desc);
-                        $('#tags').val(data.data.tag);
-                        $('#timestamp').val(data.data.timestamp);
+                        if (data.code == 1007 || data.code == 1006 || data.code == 1005 ||data.code == 1004) {
+                            window.location.href="/loginbyadmin"
+                        }
+                        $('#username').val(data.data.username);
                         testEditor.setMarkdown(data.data.content);
                     }
                 });
@@ -229,46 +229,12 @@
         });
 
     });
-    function initSelect() {
-        $.ajax({ //去后台查询第一页数据
-            type: "get",
-            url: "/api/v1/category",
-            data: {
-                pagesize: -1,
-                pagenum: -1,
-            },
-            success: function (data) {
-                htmlData(data.data)//处理第一页的数据
-            }
-        });
-    }
-
-    function htmlData(data){
-        console.log('data usccess')
-        var html='';
-        for(var i=0;i<data.length;i++){
-            html +='<option id="'+data[i].id+'" value="'+data[i].id+'">'+data[i].name+'</option>'
-        }
-        $("#tag-select").html(html);
-    }
-
-    function GetQueryString(name)
-    {
-        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if(r!=null)return  unescape(r[2]); return null;
-    };
-
-    function editArts() {
+    function editUser() {
         var data = {};
-        data["title"] = $('#title').val();
-        data["cid"] = Number($("#tag-select option:selected").attr("id"));
-        data["desc"] = $('#desc').val();
-        data["tag"] = $('#tags').val();
-        data["timestamp"] = $('#timestamp').val();
-        data["content"] = testEditor.getMarkdown();
+        data["username"] = $('#username').val();
+        data["resume"] = testEditor.getMarkdown();
         $.ajax({
-            url: '/api/v1/article/'+GetQueryString('ID'),
+            url: '/api/v1/user/',
             type: 'PUT',
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
@@ -280,9 +246,39 @@
                 request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
             },
             success: function () {
-                window.location.href="/admin/article"
+                localStorage.setItem('TOKEN', null);
+                window.location.href = "/loginbyadmin"
             }
         });
+    }
+
+    function editPassword(){
+        if ($("#new-password").val()=="") {
+            alert("新密码不能为空");
+        } else if ($("#new-password").val()!=$("#reinput").val()) {
+            alert("两次新密码不一致");
+        } else {
+            var data = {};
+            data["new"] = $("#new-password").val();
+            data["old"] = $("#old-password").val()
+            $.ajax({
+                url: '/api/v1/user/',
+                type: 'PUT',
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify(data),
+                beforeSend: function(request) {
+                    request.setRequestHeader("Accept", "application/json;charset=UTF-8");
+                    //设置数据格式：发送json格式数据，并带有字符编码："charset=UTF-8"
+                    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("TOKEN"));
+                },
+                success: function () {
+                    localStorage.setItem('TOKEN', null);
+                    window.location.href = "/loginbyadmin"
+                }
+            });
+        }
     }
 </script>
 </body>

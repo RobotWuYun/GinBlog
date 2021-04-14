@@ -16,16 +16,14 @@
     <!-- Custom Fonts -->
     <link href="../../web/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <!--
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-    -->
     <link href="../../web/css/fonts_googleapis_com/family_Montserrat_400_700.css" rel="stylesheet" type="text/css">
     <link href='../../web/css/fonts_googleapis_com/family_Kaushan_Script.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Droid_Serif_400_700_400italic_700italic.css' rel='stylesheet' type='text/css'>
     <link href='../../web/css/fonts_googleapis_com/family_Roboto_Slab_400_100_300_700.css' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="../../web/md/examples/css/style.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.preview.css"/>
+    <link rel="stylesheet" href="../../web/md/css/editormd.css"/>
 
     <!-- 标签云所用css -->
     <link rel="stylesheet" type="text/css" href="../../web/css/jqcloud.css" />
@@ -45,8 +43,15 @@
         font-size: 15px;
         font-family: "Microsoft Yahei";
     }
-
-    #word {
+    #test-editormd-view2 {
+        padding-left: 0;
+        margin: 0;
+    }
+    #foot {
+        padding-top: 100px;
+        padding-bottom: 20px;
+    }
+    #content {
         padding-top: 30px;
     }
     #search-input {
@@ -146,21 +151,15 @@
         <div class="row">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6" id="word" style="font-size: 18px">
-                        <p>本人90后，南京某邮电类高校小硕。</p>
-                        <p>
-                            联系邮箱：
-                            <a href="mailto:test@test.com">test@test.com</a>
-                        </p>
-                        <p>
-                            Github:
-                            <a href="mailto:test@test.com">test@test.com</a>
-                        </p>
-                        <p>本站结构介绍：</p>
-                        <p>标签云内显示了我的兴趣领域</p>
+                    <div class="col-md-6 col-md-offset-1" id="content" style="font-size: 18px">
+                        <div id="layout">
+                            <div id="test-editormd-view2">
+                                <textarea id="append-test" style="display:none;"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div id="tagCloud" style="width: 300px; height: 200px;margin-left: -40px;"></div>
+                    <div class="col-md-5">
+                        <div id="tagCloud" style="width: 300px;  height: 400px;margin-left: -40px;"></div>
                     </div>
                 </div>
             </div>
@@ -169,7 +168,7 @@
 
 
     <footer>
-        <div class="container">
+        <div class="container" id="foot">
             <div class="row">
                 <div class="col-md-4">
                     <span class="copyright">Copyright &copy; Your Website 2014</span>
@@ -218,23 +217,67 @@
     <!-- 标签云所用js -->
     <script type="text/javascript" src="../../web/js/jqcloud-1.0.4.min.js"></script>
 
+    <script src="../../web/md/lib/marked.min.js"></script>
+    <script src="../../web/md/lib/prettify.min.js"></script>
+
+    <script src="../../web/md/lib/raphael.min.js"></script>
+    <script src="../../web/md/lib/underscore.min.js"></script>
+    <script src="../../web/md/lib/sequence-diagram.min.js"></script>
+    <script src="../../web/md/lib/flowchart.min.js"></script>
+    <script src="../../web/md/lib/jquery.flowchart.min.js"></script>
+    <script src="../../web/md/editormd.js"></script>
     <script type="text/javascript">
         function searchKey() {
             window.location.href="/search/blogList?key="+$("#search-input").val()
         }
-        $(function(){
-            // 标签云
-            var word_array = [
-                {text: "Lorem", weight: 15},
-                {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
-                {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
-                {text: "Sit", weight: 7},
-                {text: "Amet", weight: 5}
-                // ...as many words as you want
-            ];
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: "/api/v1/user/info",
+                success: function (data) {
+                    $('#append-test').text(data.data);
+                    testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                        markdown:data.data,//+ "\r\n" + $("#append-test").text(),
+                        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                        htmlDecode: "style,script,iframe",  // you can filter tags decode
+                        //toc             : false,
+                        tocm: true,    // Using [TOCM]
+                        tocContainer: "#custom-toc-container", // 自定义 ToC 容器层
+                        //gfm             : false,
+                        //tocDropdown     : true,
+                        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                        emoji: true,
+                        taskList: true,
+                        tex: true,  // 默认不解析
+                        flowChart: true,  // 默认不解析
+                        sequenceDiagram: true,  // 默认不解析
+                    });
 
-            // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
-            $("#tagCloud").jQCloud(word_array);
+                    testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                        htmlDecode: "style,script,iframe",  // you can filter tags decode
+                        emoji: true,
+                        taskList: true,
+                        tex: true,  // 默认不解析
+                        flowChart: true,  // 默认不解析
+                        sequenceDiagram: true,  // 默认不解析
+                    });
+
+                    var word_array = [
+                        {text: "Lorem", weight: 15},
+                        {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+                        {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
+                        {text: "Sit", weight: 7},
+                        {text: "Amet", weight: 5}
+                        // ...as many words as you want
+                    ];
+
+                    // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+                    $("#tagCloud").jQCloud(word_array);
+                }
+            });
+
+
+
         });
     </script>
 

@@ -13,6 +13,7 @@ const (
 	ERROR_TOCKEN_WRONG      = 1006
 	ERROR_TOCKEN_TYPE_WRONG = 1007
 	ERROR_USER_NO_RIGHT     = 1008
+	ERROR_USERNAME_NOT_NULL = 1009
 
 	//code = 2000... 文章模块的错误
 	ERROR_ART_NOT_EXIST = 2001
@@ -25,6 +26,7 @@ var codemsg = map[int]string{
 	SUCCSE:                  "OK",
 	ERROR:                   "FAIL",
 	ERROR_USERNAME_USED:     "用户名已存在",
+	ERROR_USERNAME_NOT_NULL: "用户名不能为空",
 	ERROR_PASSWORD_WROING:   "密码错误",
 	ERROR_USER_NOT_EXIST:    "用户不存在",
 	ERROR_TOCKEN_EXIST:      "TOCKEN不存在",

@@ -30,7 +30,7 @@ func ShowBlogContent(c *gin.Context) {
 //关于我页面
 func ShowAboutMe(c *gin.Context) {
 	c.HTML(http.StatusOK, "aboutMes.html", gin.H{
-		"title": "aboutMe",
+		"title": "aboutMes",
 	})
 }
 
@@ -121,5 +121,12 @@ func EditArt(c *gin.Context) {
 func AddArt(c *gin.Context) {
 	c.HTML(http.StatusOK, "addArts.html", gin.H{
 		"title": "添加文章",
+	})
+}
+
+//编辑用户信息
+func EditUserPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "editUser.html", gin.H{
+		"title": "编辑用户",
 	})
 }

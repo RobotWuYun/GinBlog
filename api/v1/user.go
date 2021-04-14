@@ -1,12 +1,13 @@
 package v1
 
 import (
+	"GinBlog/middleware"
 	"GinBlog/model"
+	"GinBlog/utils"
 	"GinBlog/utils/errmsg"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 var code int
@@ -22,7 +23,7 @@ func AddUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
 
-	code = model.CheckUser(data.Username, 0)
+	code = model.CheckUser(data.Username)
 	if code == errmsg.SUCCSE {
 		model.CreateUser(&data)
 	}
@@ -35,7 +36,37 @@ func AddUser(c *gin.Context) {
 	})
 }
 
-//查询单个用户
+//前台查询用户简历
+func GetUserInfo(c *gin.Context) {
+	data, code := model.GetUserInfo(utils.Id)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data.Resume,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
+
+//后台获取用户信息
+func GetUserInfos(c *gin.Context) {
+	info, code := middleware.GetUserInfo(c)
+	if code == 200 {
+		data, code := model.GetUserByName(info["username"])
+		userdata := make(map[string]string)
+		userdata["username"] = data.Username
+		userdata["content"] = data.Resume
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"data":    userdata,
+			"message": errmsg.GetErrMsg(code),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"message": errmsg.GetErrMsg(code),
+		})
+	}
+}
+
 //查询用户列表
 func GetUsers(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
@@ -59,22 +90,64 @@ func GetUsers(c *gin.Context) {
 
 //编辑用户
 func EditUser(c *gin.Context) {
+	var Pagedata model.User
+	c.ShouldBindJSON(&Pagedata)
 	var data model.User
-	id, _ := strconv.Atoi(c.Param("id"))
-	c.ShouldBindJSON(&data)
-	code = model.CheckUser(data.Username, uint(id))
-
-	if code == errmsg.SUCCSE {
-		model.EditUser(id, &data)
-	}
-	if code == errmsg.ERROR_USERNAME_USED {
-		c.Abort()
+	var code int
+	info, code := middleware.GetUserInfo(c)
+	if code == 200 {
+		data, code = model.GetUserByName(info["username"])
+		if len(Pagedata.Username) > 0 {
+			if Pagedata.Username == data.Username {
+				model.EditUser(int(data.ID), &Pagedata)
+			} else {
+				code = model.CheckUser(Pagedata.Username)
+				if code == errmsg.ERROR_USERNAME_USED {
+					c.Abort()
+				} else {
+					model.EditUser(int(data.ID), &Pagedata)
+				}
+			}
+		} else {
+			code = errmsg.ERROR_USERNAME_NOT_NULL
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),
 	})
 }
+
+/*
+//修改密码
+func EditPW(c *gin.Context) {
+	c.Request.
+	c.ShouldBindJSON(&Pagedata)
+	var data model.User
+	var code int
+	info,code := middleware.GetUserInfo(c)
+	if code == 200 {
+		data, code = model.GetUserByName(info["username"])
+		if Pagedata. {
+			if Pagedata.Username == data.Username {
+				model.EditUser(int(data.ID), &Pagedata)
+			}else {
+				code = model.CheckUser(Pagedata.Username)
+				if code == errmsg.ERROR_USERNAME_USED {
+					c.Abort()
+				}else {
+					model.EditUser(int(data.ID), &Pagedata)
+				}
+			}
+		} else {
+			code = errmsg.ERROR_USERNAME_NOT_NULL
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
+}*/
 
 //删除用户
 func DeleteUser(c *gin.Context) {

@@ -10,6 +10,17 @@ type User struct {
 	Username string `gorm:"type:varchar(20);not null" json:"username" validate:"required,min=4,max=12" lable:"用户名"`
 	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=4,max=20" lable:"密码"`
 	Role     int    `gorm:"type:int;DEFAULT:2" json:"role" validate:"required,gte=2" lable:"角色码"`
+	Resume   string `gorm:"type:longtext" json:"resume"`
+}
+
+// todo 查询用户信息
+func GetUserInfo(id string) (User, int) {
+	var user User
+	err := db.Where("id=?", id).First(&user).Error
+	if err != nil {
+		return user, errmsg.ERROR_ART_NOT_EXIST
+	}
+	return user, errmsg.SUCCSE
 }
 
 //新增用户
@@ -22,10 +33,10 @@ func CreateUser(data *User) int {
 }
 
 //查询用户是否存在
-func CheckUser(name string, userid uint) (code int) {
+func CheckUser(name string) (code int) {
 	var users User
 	db.Select("id").Where("username=?", name).First(&users)
-	if userid != users.ID {
+	if 0 != users.ID {
 		return errmsg.ERROR_USERNAME_USED
 	}
 	return errmsg.SUCCSE
@@ -42,12 +53,22 @@ func GetUsers(pageSize int, pageNum int) ([]User, int) {
 	return users, total
 }
 
+//根据用户名查询用户信息
+func GetUserByName(username interface{}) (User, int) {
+	var users User
+	err := db.Where("username = ?", username.(string)).First(&users).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return users, errmsg.ERROR
+	}
+	return users, errmsg.SUCCSE
+}
+
 //编辑用户
 func EditUser(id int, data *User) int {
 	var user User
 	var maps = make(map[string]interface{})
 	maps["username"] = data.Username
-	maps["role"] = data.Role
+	maps["resume"] = data.Resume
 	err = db.Model(&user).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR
