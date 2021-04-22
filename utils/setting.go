@@ -20,6 +20,13 @@ var (
 	DbName     string
 
 	Id string
+
+	RedisHost     string
+	RedisPort     string
+	RedisPassWord string
+	RedisDB       int
+
+	TokenTime int64
 )
 
 func init() { //初始化方法
@@ -27,9 +34,12 @@ func init() { //初始化方法
 	if err != nil {
 		fmt.Println("load config err:", err)
 	}
+
 	LoadServer(file)
 	LoadDataBase(file)
 	LoadUser(file)
+	LoadRedis(file)
+	LoadTimes(file)
 }
 
 func LoadServer(file *ini.File) {
@@ -49,4 +59,15 @@ func LoadDataBase(file *ini.File) {
 
 func LoadUser(file *ini.File) {
 	Id = file.Section("user").Key("Id").MustString("1")
+}
+
+func LoadRedis(file *ini.File) {
+	RedisHost = file.Section("redis").Key("RedisHost").MustString("127.0.0.1")
+	RedisPort = file.Section("redis").Key("RedisPort").MustString("6379")
+	RedisPassWord = file.Section("redis").Key("RedisPassWord").MustString("")
+	RedisDB = file.Section("redis").Key("RedisDB").MustInt(0)
+}
+
+func LoadTimes(file *ini.File) {
+	TokenTime = file.Section("times").Key("TokenTime").MustInt64(36000)
 }
