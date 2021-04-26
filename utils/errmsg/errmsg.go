@@ -14,12 +14,15 @@ const (
 	ERROR_TOCKEN_TYPE_WRONG = 1007
 	ERROR_USER_NO_RIGHT     = 1008
 	ERROR_USERNAME_NOT_NULL = 1009
-
+	ERROR_USER_LOGINING     = 1010
 	//code = 2000... 文章模块的错误
 	ERROR_ART_NOT_EXIST = 2001
 	//code = 3000... 分类模块的错误
 	ERROR_CATENAME_USED  = 3001
 	ERROR_CATE_NOT_EXIST = 3002
+
+	//code = 4000... redis相关问题
+	ERROR_REIDS = 4000
 )
 
 var codemsg = map[int]string{
@@ -37,6 +40,8 @@ var codemsg = map[int]string{
 	ERROR_ART_NOT_EXIST:     "文章不存在",
 	ERROR_CATE_NOT_EXIST:    "分类不存在",
 	ERROR_USER_NO_RIGHT:     "该用户无权限",
+	ERROR_REIDS:             "Redis错误",
+	ERROR_USER_LOGINING:     "用户已登录",
 }
 
 func GetErrMsg(code int) string {

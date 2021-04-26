@@ -10,13 +10,13 @@ import (
 )
 
 var db *gorm.DB
-var err error
+var dberr error
 
 func InitDb() {
-	db, err = gorm.Open(utils.Db, fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	db, dberr = gorm.Open(utils.Db, fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		utils.DbUser, utils.DbPassWord, utils.DbHost, utils.DbPort, utils.DbName))
-	if err != nil {
-		fmt.Println("Establishing a connection:", err)
+	if dberr != nil {
+		fmt.Println("Establishing a connection:", dberr)
 	}
 	//防止自动名称复数化 要放在自动迁移前面
 	db.SingularTable(true)

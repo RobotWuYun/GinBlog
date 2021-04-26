@@ -48,7 +48,7 @@ func EditCate(id int, data *Category) int {
 	var cate Category
 	var maps = make(map[string]interface{})
 	maps["name"] = data.Name
-	err = db.Model(&cate).Where("id = ?", id).Updates(maps).Error
+	err := db.Model(&cate).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
@@ -58,7 +58,7 @@ func EditCate(id int, data *Category) int {
 //删除分类
 func DeleteCate(id int) int {
 	var cate Category
-	err = db.Where("id = ?", id).Delete(&cate).Error
+	err := db.Where("id = ?", id).Delete(&cate).Error
 	if err != nil {
 		return errmsg.ERROR
 	}

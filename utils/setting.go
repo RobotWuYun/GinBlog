@@ -26,7 +26,7 @@ var (
 	RedisPassWord string
 	RedisDB       int
 
-	TokenTime int64
+	LoginTime int64
 )
 
 func init() { //初始化方法
@@ -62,12 +62,12 @@ func LoadUser(file *ini.File) {
 }
 
 func LoadRedis(file *ini.File) {
-	RedisHost = file.Section("redis").Key("RedisHost").MustString("127.0.0.1")
-	RedisPort = file.Section("redis").Key("RedisPort").MustString("6379")
-	RedisPassWord = file.Section("redis").Key("RedisPassWord").MustString("")
-	RedisDB = file.Section("redis").Key("RedisDB").MustInt(0)
+	RedisHost = file.Section("redisParam").Key("RedisHost").MustString("127.0.0.1")
+	RedisPort = file.Section("redisParam").Key("RedisPort").MustString("6379")
+	RedisPassWord = file.Section("redisParam").Key("RedisPassWord").MustString("111111")
+	RedisDB = file.Section("redisParam").Key("RedisDB").MustInt(0)
 }
 
 func LoadTimes(file *ini.File) {
-	TokenTime = file.Section("times").Key("TokenTime").MustInt64(36000)
+	LoginTime = file.Section("times").Key("LoginTime").MustInt64(36000000000000)
 }

@@ -22,7 +22,7 @@ var code int
 
 //生成tocken
 func SetToken(username string) (string, int) {
-	expireTime := time.Now().Add(time.Duration(utils.TokenTime) * time.Second)
+	expireTime := time.Now().Add(time.Duration(utils.LoginTime))
 	SetClaims := MyClaims{
 		username,
 		jwt.StandardClaims{

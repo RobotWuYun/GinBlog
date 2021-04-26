@@ -103,7 +103,7 @@ func EditArt(id int, data *Article) int {
 	maps["content"] = data.Content
 	maps["tag"] = data.Tag
 	maps["timestamp"] = data.Timestamp
-	err = db.Model(&art).Where("id = ?", id).Updates(maps).Error
+	err := db.Model(&art).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
@@ -113,7 +113,7 @@ func EditArt(id int, data *Article) int {
 //删除文章
 func DeleteArt(id int) int {
 	var art Article
-	err = db.Where("id = ?", id).Delete(&art).Error
+	err := db.Where("id = ?", id).Delete(&art).Error
 	if err != nil {
 		return errmsg.ERROR
 	}

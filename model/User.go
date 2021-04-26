@@ -72,7 +72,7 @@ func EditUser(id int, data *User) int {
 	if data.Password != "" {
 		maps["password"] = data.Password
 	}
-	err = db.Model(&user).Where("id = ?", id).Updates(maps).Error
+	err := db.Model(&user).Where("id = ?", id).Updates(maps).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
@@ -82,7 +82,7 @@ func EditUser(id int, data *User) int {
 //删除用户
 func DeleteUser(id int) int {
 	var user User
-	err = db.Where("id = ?", id).Delete(&user).Error
+	err := db.Where("id = ?", id).Delete(&user).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
