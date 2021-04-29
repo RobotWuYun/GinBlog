@@ -3,9 +3,11 @@ package v1
 import (
 	"GinBlog/middleware"
 	"GinBlog/model"
+	"GinBlog/utils"
 	"GinBlog/utils/errmsg"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 func Login(c *gin.Context) {
@@ -15,7 +17,7 @@ func Login(c *gin.Context) {
 
 	c.ShouldBindJSON(&data)
 	//调用redis判断用户是否登录
-	exists, code := middleware.IsUserLogin(data.Username)
+	exists, code := middleware.IsKeyExists(data.Username)
 	if code == errmsg.SUCCSE {
 		if exists {
 			c.JSON(http.StatusOK, gin.H{
@@ -37,7 +39,7 @@ func Login(c *gin.Context) {
 	code = model.ChackLogin(data.Username, data.Password)
 
 	if code == errmsg.SUCCSE {
-		code = middleware.SetUserLogin(data.Username)
+		code = middleware.SetKey(data.Username, data.Username, time.Duration(utils.LoginTime))
 		if code == errmsg.ERROR {
 			c.JSON(http.StatusOK, gin.H{
 				"status":  code,

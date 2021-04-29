@@ -37,7 +37,7 @@ func InitRouter() *gin.Engine {
 	router.GET("/tag/blogList/", v1.TagList)
 	//搜索列表
 	router.GET("/search/blogList/", v1.KeyList)
-	//登录
+	//登录(redis验证)
 	router.GET("/loginbyadmin", v1.LoginPage)
 	//管理首页(模板页面)
 	router.GET("/admin", v1.ShowAdmin)
@@ -58,11 +58,6 @@ func InitRouter() *gin.Engine {
 		admin.GET("/editUser", v1.EditUserPage)
 	}
 
-	/*
-	 ****************************************************
-	 *	后台逻辑 这块只需要验证token,然后把Redis更新
-	 * **************************************************
-	 */
 	auth := router.Group("api/v1")
 	auth.Use(middleware.JwtToken())
 	{
@@ -102,6 +97,7 @@ func InitRouter() *gin.Engine {
 	 * **************************************************
 	 */
 	routers := router.Group("api/v1")
+	routers.Use(middleware.RedisStringData())
 	{
 		routers.GET("users", v1.GetUsers)
 		routers.GET("category", v1.GetCate)
